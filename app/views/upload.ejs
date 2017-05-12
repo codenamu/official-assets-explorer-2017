@@ -1,0 +1,94 @@
+<html>
+  <head>
+      <script src="jquery/jquery.js"></script>
+      <link rel="stylesheet" type="text/css" href="css/style.css">  
+      <title>고위 공무원 재산 프로젝트</title>
+  </head>
+  <body>
+    <% include ./header.ejs %>
+    <h3>Upload CSV</h3>
+    <form id="csv_form" action="/upload" method="post" enctype="multipart/form-data">
+        <div id = "status"></div>
+        <select id="csv_year" name="csv_year">
+            <% for(var i=2017; 2011 <= i; i--){ %>
+              <li>
+                <option><%=i%></option>
+              </li>
+            <% } %>
+        </select>
+        <!--<input name="csv_file" type="file"/>-->
+        <!--<input id="submit_btn"type="submit" value="Upload"/>-->
+        <input id="submit_btn" type="button" value="Submit Official Asset Data"/>
+        <input id="update_btn" type="button" value="Update Summary Data"/>
+    </form>
+  </body>
+  <script>
+    $(document).ready(function() {
+      // $("#submit_btn").click(function (event) {
+      //   event.preventDefault();
+      //   var form = $('#csv_form')[0];
+  	   // var data = new FormData(form);
+      //   $("#submit_btn").prop("disabled", true);
+      //   $("#status").html("Submit Asset Data...");
+      //   $.ajax({
+      //     type: "POST",
+      //     enctype: 'multipart/form-data',
+      //     url: "/upload",
+      //     data: data,
+      //     dataType:"json",
+      //     processData: false,
+      //     contentType: false,
+      //     success: function (data) {
+      //       $("#status").html(data.result);
+      //       $("#submit_btn").prop("disabled", false);
+      //     },
+      //     error: function (e) {
+      //       $("#status").html(e.responseText);
+      //       $("#submit_btn").prop("disabled", false);
+      //     }
+      //   });
+      // });
+      
+      $("#submit_btn").click(function (event) {
+        $("#submit_btn").prop("disabled", true);
+        $("#status").html("Submit Asset Data...");
+        $.ajax({
+          type: "POST",
+          url: "/upload/" + $("#csv_year").val(),
+          dataType:"json",
+          processData: false,
+          contentType: false,
+          success: function (data) {
+            $("#status").html(data.result);
+            $("#submit_btn").prop("disabled", false);
+          },
+          error: function (e) {
+            $("#status").html(e.responseText);
+            $("#submit_btn").prop("disabled", false);
+          }
+        });
+      });
+      
+      $("#update_btn").click(function (event) {
+        $("#update_btn").prop("disabled", true);
+        $("#status").html("Update Summary Data...");
+        $.ajax({
+          type: "POST",
+          url: "/summary",
+          dataType:"json",
+          processData: false,
+          contentType: false,
+          success: function (data) {
+            $("#status").html(data.result);
+            $("#update_btn").prop("disabled", false);
+          },
+          error: function (e) {
+            $("#status").html(e.responseText);
+            $("#update_btn").prop("disabled", false);
+          }
+        });
+      });
+    });
+  </script>
+</html>
+

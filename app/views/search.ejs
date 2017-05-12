@@ -1,0 +1,256 @@
+<div class="content_container">
+    <div class="content_title col-xs-12 col-sm-12">
+        <div>고위 공무원</div>
+        <div>재산 / 포트폴리오</div>
+    </div>
+    <div class="row">
+        <div class="content_update col-xs-12 col-sm-6">마지막 업데이트, 2017년 4월 12일</div>
+        <div class="col-xs-12 col-sm-6">
+            <p class="content_desc">
+                이 데이터베이스를 이용하여 대한미국 고위 공무원의 현재 재산 상태를 확인하고 부동산/동산과 같은 재정적 세부 사항을 확인할 수 있습니다. 2011년이래로 940만 건 이상의 고위 공직자 재산 데이터에 액세스 할 수 있습니다.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="search_title">검색하기</div>
+        <div class="search_container">
+            <input id="search_text" type="text" value="이름, 정당, 직책 등"/>
+            <input id="search_btn" type="button" value="검색"/>
+        </div>
+    </div>
+    <div id="order_by" class="row order_by">
+        <ul class="order_line">
+            <li name="totals" class="order_select">전체 재산 순</li>
+            <li>|</li>
+            <li name="tengible_estate_amounts">부동산 보유 순</li>
+            <li>|</li>
+            <li name="fluctuates">전년도 대비 증가 순</li>
+            <li>|</li>
+            <li name="relations">자녀 재산 순</li>
+        </ul>
+        <ul class="order_group">
+            <li name="totals" class="order_select col-xs-7">전체 재산 순</li>
+            <li name="fluctuates" class="col-xs-5">전년도 대비 증가 순</li>
+            <li name="tengible_estate_amounts" class="col-xs-7">부동산 보유 순</li>
+            <li name="relations" class="col-xs-5">자녀 재산 순</li>
+        </ul>
+    </div>
+    
+    <div id="main_chart" class="main_chart">
+        <table id="assets_table col-sm-12">
+            <thead>
+                <tr>
+                    <th class="text-left col-sm-4">이름(소속 및 지위)</th>
+                    <th class="text-left col-sm-5"><span style="margin-right:49px;">재산 총액</span><span>재산 분류</span></th>
+                    <th class="text-right col-sm-3">전년도 대비</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="4">
+                        <div id="total_chart"></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+    var paging = 0;
+    var search_order = "totals";
+    var search_keyword = "-";
+    //initData
+    getSummaryDatas('totals', search_keyword);
+    
+    $("#search_text").click(function (event) {
+        $("#search_text").val("");
+        search_keyword = "-";
+    });
+    
+    $('.order_by li').click(function(e){
+        if($(this).attr('name') !=null){
+            paging = 0;
+            $('.order_by li').each(function(e){
+                $(this).removeClass( "order_select" );
+            });
+            
+            $(this).addClass( "order_select" );
+            getSummaryDatas($(this).attr('name'), search_keyword);
+        }
+    });
+  
+    $("#search_btn").click(function (event) {
+        search_keyword = $("#search_text").val();
+        if(search_keyword == "" || search_keyword == "-" || search_keyword == "이름, 정당, 직책 등"){
+            paging = 0;
+            search_keyword = "-";
+            $("#search_text").val("이름, 정당, 직책 등");
+            $("#order_by").show();
+            $(".order_by li:first").click();
+        }else{
+            paging = 0;
+            getSummaryDatas("totals", search_keyword);
+            $("#order_by").hide();
+        }
+    });
+    
+    function getSummaryDatas(search_order, search_keyword){
+        //uri : api/summary/[order by:totals, estate_amounts, fluctuates, relations]/[paging:pagenumber*limit]
+        $.ajax({
+          type: "GET",
+          url: "/api/summary/"+search_order+"/"+search_keyword+"/"+(paging*4),
+          dataType:"json",
+          processData: false,
+          contentType: false,
+          success: function (data) {
+           // if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            if($(window).width() <=640){      
+                addAssetTableByMobile(data);    
+            }else{
+                addAssetTable(data);    
+            }
+          },
+          error: function (e) {
+          }
+        });
+    }
+    
+    function addAssetTable(data){
+        if(data.length <=0){
+            $("#assets_table tbody").append(getEmptyRowHtml(4));        
+        }else{
+            $("#total_chart").height((data.length+(paging*4))*170);
+        
+            main_options.series = [];
+            main_options.xAxis[0].categories = []; 
+            main_options.xAxis[1].categories = []; 
+            
+            var total_data = new Array();
+            $(data).each(function(index) {
+                main_options.xAxis[0].categories.push(getCategoryHtml(data[index].name,data[index].organization,data[index].job_title,data[index].totals));
+                main_options.xAxis[1].categories.push(getCategoryFluctuates(data[index].fluctuates));
+            
+                var total_sub_data = new Array();
+                total_sub_data.push(data[index].tengibles);
+                total_sub_data.push(data[index].tengible_estates);
+                total_sub_data.push(data[index].financials);
+                
+                total_data.push(total_sub_data);
+            });
+            
+            for(var i =0; i<3; i++){
+                var series_row = new Object();
+                series_row.name = getSeriesName(i);
+                series_row.showInLegend = false;
+                    
+                var row_data = Array();
+                $(data).each(function(index) {
+                    
+                    var obj = new Object();
+                    obj.y = total_data[index][i];
+                    obj.color = '#242424';
+                    obj.borderColor = index%2==0?'#ffaf00':'#0075fa';
+                    obj.borderWidth = '2';
+                    row_data.push(obj);
+                });
+                
+                series_row.data = row_data;
+                
+                main_options.series.push(series_row);
+            }
+        
+            var total_chart = new Highcharts.Chart(main_options);
+            
+            $("#total_chart g:first path:last").attr('stroke','#fff');
+            $("#total_chart .highcharts-xaxis:eq(0) path:last").prev().attr('stroke','#fff');
+            $("#total_chart .highcharts-xaxis:eq(1) path:last").prev().attr('stroke','#fff');
+            
+            if (-1 < navigator.appVersion.indexOf("Win")){
+                $("#total_chart .highcharts-xaxis-labels:first text").each(function(index){
+                    $(this).find("tspan:first").attr('x', getXpointByLenthWin($(this).find("tspan:first").text()));
+                    $(this).find("tspan:first").attr('dy', '15');
+                    $(this).find("tspan:eq(1)").attr('x', getXpointByLenthWin($(this).find("tspan:eq(1)").text()));
+                    $(this).find("tspan:eq(1)").attr('dy', '20');
+                    $(this).find("tspan:eq(2)").attr('x', getXpointByLenthWin($(this).find("tspan:eq(2)").text()));
+                    $(this).find("tspan:eq(2)").attr('dy', '20');
+                    $(this).find("tspan:eq(3)").attr('x', '345');
+                    $(this).find("tspan:eq(3)").attr('dy', '-22');   
+                });
+            }else{
+                $("#total_chart .highcharts-xaxis-labels:first text").each(function(index){
+                    $(this).find("tspan:first").attr('x', getXpointByLenth($(this).find("tspan:first").text()));
+                    $(this).find("tspan:first").attr('dy', '10');
+                    $(this).find("tspan:eq(1)").attr('x', getXpointByLenth($(this).find("tspan:eq(1)").text()));
+                    $(this).find("tspan:eq(1)").attr('dy', '20');
+                    $(this).find("tspan:eq(2)").attr('x', getXpointByLenth($(this).find("tspan:eq(2)").text()));
+                    $(this).find("tspan:eq(2)").attr('dy', '20');
+                    $(this).find("tspan:eq(3)").attr('x', '345');
+                    $(this).find("tspan:eq(3)").attr('dy', '-22');
+                });
+            }
+        }
+    }
+    
+    function getXpointByLenth(text){
+        return  (13*text.length)-1;
+    }
+    
+    function getXpointByLenthWin(text){
+        var point = "0";
+        switch(text.length){
+            case 2:
+                point = "29";
+                break;
+            case 3:
+                point = "43";
+                break;
+            case 4:
+                point = "59";
+                break;
+        }
+        return  point;
+    }
+    
+    function addAssetTableByMobile(data){
+        if(data.length <=0){
+            $("#main_chart").html(getEmptyRowHtml(4));  
+        }else{
+            $("#main_chart").empty();
+            $(data).each(function(index) {
+                main_mobile_option.series = [];    
+                for(var i =0; i<3; i++){
+                    var series_row = new Object();   
+                    series_row.showInLegend = false;
+                    series_row.name = getSeriesName(i);
+                    series_row.data = [];
+                    
+                    var value = 0;
+                    if(i==0){
+                        value = data[index].tengibles;
+                    }else if(i==1){
+                        value = data[index].tengible_estates;
+                    }else {
+                        value = data[index].financials;    
+                    }
+                    
+                    const obj = new Object();
+                    obj.color = '#242424';
+                    obj.borderColor ='#ffaf00';
+                    obj.borderWidth = '2';
+                    obj.y = value;
+                    
+                    series_row.data.push(obj);
+                    
+                    main_mobile_option.series.push(series_row);
+                }
+                
+                $("#main_chart").append(getMainOfficerHtmlByMobile(data[index].officer_id, data[index].organization,data[index].division,data[index].job_title,data[index].name, data[index].totals, data[index].fluctuates));
+                
+                main_mobile_option.chart.renderTo = 'main_chart_'+data[index].officer_id;
+                var total_chart = new Highcharts.Chart(main_mobile_option);    
+            });
+        }
+    }
+});
+</script>

@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, Initial-scale=1.0">
+        <script src="jquery/jquery.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <script src="js/chart.js"></script>
+        <script src="js/util.js"></script>
+        <script src="js/main.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <title>고위 공무원 재산 프로젝트</title>
+    </head>
+    <body>
+        <div id="container-fluid">
+            <% include ./header.ejs %>
+            
+            <div id="search_div" class="visible"><% include ./search.ejs %></div>
+            <div id="data_div" class="hidden"><% include ./data.ejs %></div>
+            <div id="introduce_div" class="hidden"><% include ./introduce.ejs %></div>
+            <div id="news_div" class="hidden"><% include ./news.ejs %></div>
+        
+            <div class="footer_container">
+                
+                <div class="footer_comment">
+                    <div id="disqus_thread"></div>
+                    <script>
+                    
+                    (function() {
+                        var d = document, s = d.createElement('script');
+                        s.src = 'https://korea-official-assets.disqus.com/embed.js';
+                        s.setAttribute('data-timestamp', +new Date());
+                        (d.head || d.body).appendChild(s);
+                        })();
+                    </script> 
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        
+    $(document).ready(function() {
+        $('.header_menu li').click(function(e){
+            $('.header_menu li').each(function (e){
+                $("#"+$(this).attr('name')+"_div").removeClass("visible").addClass("hidden");
+            });
+            $("#"+$(this).attr('name')+"_div").removeClass("hidden");
+        });
+    });
+    
+    </script>
+    <script id="dsq-count-scr" src="//korea-official-assets.disqus.com/count.js" async></script>
+</html>
+

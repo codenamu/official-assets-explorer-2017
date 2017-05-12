@@ -1,0 +1,312 @@
+<div class="content_container">
+    <div class="content_title col-xs-12 col-sm-12">
+        <div>고위 공무원</div>
+        <div>재산 / 포트폴리오</div>
+    </div>
+    <div class="row">
+        <div class="content_update col-xs-12 col-sm-6">마지막 업데이트, 2017년 4월 12일</div>
+        <div class="col-xs-12 col-sm-6">
+            <p class="content_desc">
+                이 데이터베이스를 이용하여 대한미국 고위 공무원의 현재 재산 상태를 확인하고 부동산/동산과 같은 재정적 세부 사항을 확인할 수 있습니다. 2011년이래로 940만 건 이상의 고위 공직자 재산 데이터에 액세스 할 수 있습니다.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="search_title">검색하기</div>
+        <div class="search_container">
+            <input id="data_search_text" type="text" value="이름, 정당, 직책 등"/>
+            <input id="data_search_btn" type="button" value="검색"/>
+        </div>
+    </div>
+    <div class="officer_container">
+        <table id="officer_table" class="officer_table col-sm-12">
+            <tbody>
+            </tbody>
+        </table>  
+    </div>
+    <div class="data_container">
+        <table id="data_table" class="data_table col-sm-12">
+            <thead>
+                <tr>
+                    <th class="col-sm-4 text-left">항목</th>
+                    <th class="col-sm-3 text-left">2016년</th>
+                    <th class="col-sm-3 text-left">2017년</th>
+                    <th class="col-sm-2 text-right">증감</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="no_data" colspan="4">검색 결과가 없습니다.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="sub_chart" class="row sub_chart hidden">
+        <table>
+            <td class="col-xs-12 col-sm-1 text-left sub_title">재산 이력</td>
+            <td class="col-xs-12 col-sm-5 text-left"><div id="history_chart" style="min-width: 310px;" /></td>
+            <td class="col-xs-12 col-sm-1 text-right sub_title">재산 비교</td>
+            <td class="col-xs-12 col-sm-5 text-left"><div id="compare_chart" style="min-width: 310px;text-align:right !important"/></td>
+        </table>    
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $("#data_search_text").click(function (event) {
+            $("#data_search_text").val("");
+        });
+        
+        $("#data_search_btn").click(function (event) {
+            var search_keyword = $("#data_search_text").val();
+            if(search_keyword == "" || search_keyword == "-" || search_keyword ==  "이름, 정당, 직책 등"){
+                alert("검색 키워드를 입력해주세요.");    
+                $("#search_text").val("이름, 정당, 직책 등");
+                search_keyword = "-";
+            }else{
+                getSummaryDatas(search_keyword);
+            }
+        });
+        
+        function getSummaryDatas(search_keyword){
+            //uri : api/summary/[order by:totals, estate_amounts, fluctuates, relations]/[paging:pagenumber*limit]
+            $.ajax({
+              type: "GET",
+              url: "/api/summary/totals/"+search_keyword+"/0",
+              dataType:"json",
+              processData: false,
+              contentType: false,
+              success: function (data) {
+                if($(window).width() <=640){      
+                    addOfficerTableByMobile(data);    
+                }else{
+                    addOfficerTable(data);    
+                }
+              },
+              error: function (e) {
+              }
+            });
+        }
+        
+        function addOfficerTable(data){
+            $("#officer_table tbody").empty();
+            $("#data_table tbody").empty();
+            if(data.length <=0){
+                $("#data_table tbody").append(getEmptyRowHtml(4));
+                $("#sub_chart").removeClass("visible").addClass("hidden");
+            }else{
+                $("#data_table tbody").append(getSelectRowHtml(4));
+                
+                $(data).each(function(index) {
+                    $("#officer_table tbody").append(getOfficerHtml(data[index].officer_id, data[index].organization, data[index].division, 
+                    data[index].job_title, data[index].name, data[index].totals, data[index].fluctuates));
+                });
+             
+                $("#officer_table tbody").on("click", "tr", function(e){
+                    var officer_id = $(this).closest('tr').children('td:first').text();
+                    var total_html = $(this).closest('tr').children('td:nth-child(3)').html();
+                    var fluctuates_html = $(this).closest('tr').children('td:nth-child(4)').html();
+                    
+                    getOfficerData(officer_id, total_html, fluctuates_html);
+                });
+                
+                if(data.length==1)
+                    $("#officer_table tr:eq(0)").click();
+            }
+        }
+        
+        function addOfficerTableByMobile(data){
+            $("#officer_table tbody").empty();
+            $("#data_table tbody").empty();
+            if(data.length <=0){
+                $("#data_table tbody").append(getEmptyRowHtml(2));
+                $("#sub_chart").removeClass("visible").addClass("hidden");
+            }else{
+                $("#data_table tbody").append(getSelectRowHtml(2));
+                
+                $(data).each(function(index) {
+                    $("#officer_table tbody").append(getOfficerHtmlByMobile(data[index].officer_id, data[index].organization, data[index].division, 
+                    data[index].job_title, data[index].name, data[index].totals, data[index].fluctuates));
+                });
+             
+                $("#officer_table").on("click", "tbody", function(e){
+                    var officer_id = $(this).find('tr:first').children('td:first').text();
+                    var fluctuates_html = $(this).find('tr:first').children('td:nth-child(3)').html();
+                    var total_html = $(this).find('tr:eq(1)').children('td:first').html();
+                    
+                    getOfficerData(officer_id, total_html, fluctuates_html);
+                });
+                
+                if(data.length==1)
+                    $("#officer_table tr:eq(0)").click();
+            }
+        }
+        
+        function getOfficerData(officer_id, total_html, fluctuates_html){
+            $.ajax({
+              type: "GET",
+              url: "/api/summary/"+officer_id,
+              dataType:"json",
+              processData: false,
+              contentType: false,
+              success: function (data) {
+                $("#officer_table tbody").prop('onclick',null).off('click');
+                $("#officer_table tbody").empty();
+                $("#data_table tbody").empty();
+                
+                addDataTable(data, total_html, fluctuates_html);
+                
+                getSummaryDataByTotal(officer_id);
+              },
+              error: function (e) {
+              }
+            });
+        }
+        
+        const DRAW_PADDING = 5;
+        function getSummaryDataByTotal(search_id){
+            $.ajax({
+              type: "GET",
+              url: "/api/summary",
+              dataType:"json",
+              processData: false,
+              contentType: false,
+              success: function (data) {
+                $("#compare_chart").empty();
+                var measure = $("#compare_chart").width();
+                var svgContainer = d3.select("#compare_chart").append("svg")
+                    .attr("width", measure)
+                    .attr("height", measure+DRAW_PADDING*5);
+            
+                var start_x = measure/2;
+                var start_y = measure+DRAW_PADDING;
+                var rgb = 210;
+                var calc_symbol = true;
+                var diff_rgb= 20;
+                
+                // var search_circle = new Array();
+                for(var i=0; i < data.length; i++){
+            //         // circle_r = ((measure/2)-1)*data[i].totals/data[0].totals;
+                    var circle_r = ((measure-DRAW_PADDING*2)/2)*(Math.log(data[i].totals-1)/Math.log(data[0].totals))^4;
+                  
+                    var circle = svgContainer
+                        .append("circle")
+                        .attr("fill", "rgb("+rgb+","+rgb+","+rgb+")")
+                        .attr("cx", start_x)
+                        .attr("cy", (circle_r<0?Math.abs(circle_r)+start_y:start_y-circle_r))
+                        .attr("r", (circle_r<0?Math.abs(circle_r):circle_r));
+                    
+                    if(i==0){
+                        circle.style("stroke", "white");
+                        circle.style("stroke-width", "3");
+                    }
+                    
+                    const original_color = rgb;
+                    
+                    if(search_id == data[i].officer_id){
+                        const index = (i+1);
+                        const position = Math.round(index/data.length*100);
+                        
+                        circle.attr("fill", "rgb(255,99,0)");
+                        const chart_tooltip = d3.select("#compare_chart")
+                            .append("div")
+                            .text(data[i].name+" "+data[i].job_title + "재산 "+getTotalText(convertUnit(data[i].totals))+"원은 상위 "+(position<=0?1:position)+"%에 속합니다.")
+                            .attr('class','chart_tooltip');
+                        
+                        circle.on("mouseover", function(event){
+                            d3.select(this).style("stroke", "rgb(255,99,0)");
+                            chart_tooltip.style("visibility", "visible");
+                        }).on("mousemove", function(event){
+                            var posX = d3.mouse(this)[0]+20;
+                            var posY = d3.mouse(this)[1]-20;
+                            chart_tooltip.style("top", posY+"px").style("left",posX+"px");
+                        }).on("mouseout", function(){
+                            chart_tooltip.style("visibility", "hidden");
+                            
+                            if(index==0){
+                                d3.select(this).style("stroke", "white").style("stroke-width", "3");
+                            }
+                            else{
+                                d3.select(this).style("stroke", "rgb("+original_color+","+original_color+","+original_color+")");
+                            }
+                            d3.select(this).style("fill", "rgb(255,99,0)");
+                        });
+                        // search_circle = circle;
+                        // search_circle.push(circle);
+                    }
+                    
+                    if(calc_symbol){
+                        rgb = rgb + diff_rgb;
+                        if(210<=rgb)
+                            calc_symbol = false;
+                    }else{
+                        rgb = rgb - diff_rgb;
+                        if(rgb<=0)
+                            calc_symbol = true;
+                    }
+                }
+                
+                // svgContainer.append(search_circle[0]);
+                svgContainer.exit().remove();
+              },
+              error: function (e) {
+              }
+            });
+        }
+        
+        function addDataTable(data, total, fluctuate){
+            if($(window).width() <=640){      
+                $("#officer_table tbody").append(getSelectedOfficerHtmlByMobile( data.organization, data.division, data.job_title, data.name, total, fluctuate));
+                $("#data_table tbody").append(getAssetDataHtmlByMobile(data.tengible_estate_assets, data.tengible_assets, data.financial_assets, data.liability_assets));
+            }else{
+                $("#officer_table tbody").append(getSelectedOfficerHtml(data.organization, data.division, data.job_title, data.name, total, fluctuate));
+                $("#data_table tbody").append(getAssetDataHtml(data.tengible_estate_assets, data.tengible_assets, data.financial_assets, data.liability_assets));
+            }
+            
+            $("#sub_chart").removeClass("hidden").addClass("visible");
+            
+            var current_year = data.summaries[0].year_of_investigating
+            var current_assets = data.summaries[0].totals;
+            var previous_assets = current_assets - data.summaries[0].fluctuates;
+            var series_data =  new Array();
+            
+            // 전년도 재산
+            var row_data = new Array();
+            row_data.push(current_year-1);
+            row_data.push(previous_assets);
+            series_data.push(row_data);
+            
+            // 현년 재산
+            row_data = new Array();
+            row_data.push(current_year);
+            row_data.push(current_assets);
+            series_data.push(row_data);
+            
+            history_options.tooltip.pointFormat = data.name+ " "+ data.job_title +"의 재산은 전년 대비 <b>"
+                +numberWithCommas(getTotalText(convertUnit(data.summaries[0].fluctuates))).replace("-","")+" "+(-1<data.summaries[0].fluctuates.toString().indexOf("-")?"감소":"증가")+"하였습니다.</b>";
+            
+            var history_chart = new Highcharts.Chart(history_options);
+            history_chart.series[0].setData(series_data, true);
+            
+            $(".highcharts-grid.highcharts-xaxis-grid path:last").attr("stroke-width","0");
+        }
+        
+        var div = d3.select("body").append("div")
+                .attr("class", "chart_tooltip")
+                .style("display", "none");
+            
+            function mouseover() {
+              div.style("display", "inline");
+            }
+            
+            function mousemove() {
+              div
+                  .text(d3.event.pageX + ", " + d3.event.pageY)
+                  .style("left", (d3.event.pageX - 34) + "px")
+                  .style("top", (d3.event.pageY - 12) + "px");
+            }
+            
+            function mouseout() {
+              div.style("display", "none");
+            }
+    });
+</script>

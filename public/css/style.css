@@ -1,0 +1,755 @@
+/* import fonts*/
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+
+@font-face {
+  font-family: 'open-arrow';
+  src: url('fonts/OpenArrow-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+  
+@font-face {
+  font-family: 'mark-pro';
+  src: url('fonts/ff-mrk-pro-light.woff') format('woff');
+  font-weight: lighter;
+  font-style: normal;
+}
+
+body{
+  padding: 0px;
+  margin: 0px;
+  color: #fff;
+  background-color: #242424;
+  font-family: 'open-arrow', 'Spoqa Han Sans', 'Sans-serif' !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+ul{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+a, a:hover, a:active, a:link, a:visited {
+  text-decoration: none;
+  color: #fff;
+}
+
+.row{
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+    padding: 0px;
+}
+
+.margin-bottom-15{
+  margin-bottom: 15px !important;
+}
+
+.padding-top-35{
+  padding-top: 35px !important
+}
+
+.header_container{
+  background-color: #292929;
+  color: #ffffff;
+}
+
+.header_title{
+  float: left;
+}
+
+.header_title span{
+  vertical-align:top;
+  position:relative;
+}
+
+.header_menu{
+  float: right !important;
+  font-weight: bold;
+}
+
+.header_container li {
+  float: left;
+}
+
+.content_container{
+  margin: 0 auto;
+}
+
+.content_title{
+  font-weight: bold;
+}
+
+.content_update{
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.content_desc{
+  font-weight: bold;
+  margin: 0px;
+}
+
+.search_title{
+  font-weight: bold;
+  color: #fff;
+}
+
+.search_container input[type="text"] {
+  display: inline;
+  box-shadow: none;
+  border-top:none;
+  border-left:none;
+  border-right:none;
+  border-bottom: solid 1px #979797;
+  color: rgba(255, 255, 255, 0.5);
+  background-color: #242424;
+}
+
+.search_container input[type="text"]:focus {
+  outline: none;
+}
+
+.search_container input[type="button"]{
+  color: #5b5b5b;
+  background: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+  -webkit-border-radius: 7;
+  -moz-border-radius: 7;
+  border-radius: 7px;
+  border: none;
+}
+
+.search_container input[type="button"]:hover {
+  text-decoration: none;
+}
+
+.search_container input[type="button"]{
+  width: 64px;
+  height: 40px;
+  padding-top: 7px;
+  padding-bottom:9px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.order_by{
+  cursor: pointer;
+}
+
+.order_by li {
+  float: left;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.order_select{
+  color: #fff !important;
+  font-weight: bold;
+}
+
+.official_title{
+  color: #fff;
+  font-weight: bold;
+}
+
+.official_text{
+  color: rgba(255,255,255,0.7);
+  font-weight: bold;
+}
+
+.big_price, .small_price{
+  color: #fff;
+  margin-right: 2px;
+}
+
+.big_price{
+  font-size: 40px;
+}
+
+.small_price{
+  font-size: 25px;
+}
+
+.simple_price{
+  font-size: 25px;
+  margin-right: 2px;
+}
+
+.unit_price{
+  font-size: 15px;
+  color: rgba(255,255,255,0.5);
+}
+
+.arrow_price{
+  font-size: 27px;
+  display: inline;
+  vertical-align:bottom;
+  line-height:20px;
+}
+
+.up_price, .down_price{
+  font-size: 15px;
+  padding-top:30px;
+  vertical-align:top;
+}
+
+.up_price{
+  color: #ff6300;
+}
+
+.down_price{
+  color: #0075fa;
+}
+
+.sub_chart .sub_title{
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.sub_chart table{
+  width:100%;
+}
+
+.download_table tr{
+  border-bottom: 1px solid rgba(255,255,255,0.5);
+  font-weight: bold;
+}
+
+.download_year{
+  color: rgba(255,255,255,0.5);
+}
+
+.content_introduce{
+  font-weight: bold;
+  float: left;
+  margin: 0px !important;
+}
+
+.site_desc{
+  font-size: 15px;
+}
+
+.intro_title{
+  color: #fff !important;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.intro_text{
+  color: rgba(255,255,255,0.5);
+}
+
+.intro_name{
+  color: rgba(255,255,255,1);
+   margin-bottom: 36px;
+}
+
+.article{
+  padding-top: 18px;
+  margin-bottom: 24px;
+}
+
+.news_image{
+  margin-bottom: 12px;
+}
+
+.news_title{
+  color: #fff;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.news_sub_title{
+  font-size: 13px !important;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.no_data{
+  text-align: center;
+  padding: 13px 0px;
+}
+    
+@media screen and (min-width:640px){
+    .header_container{
+        font-size: 15px;
+        height: 79px;
+    }
+    
+    .header_title{
+      padding-top: 20px;
+      padding-left: 30px;
+      font-size: 15px;
+    }
+    
+    .header_sub_title{
+      font-weight: bold;
+      margin-right: 3px;
+    }
+    
+    .header_title .codenamu_logo{
+      margin-right: 10px;
+      width: 40px;
+      height: 40px;
+    }
+    
+    .header_title span{ 
+      top: 9px;
+    }
+    
+    .header_menu{
+      padding-top: 29px; 
+      padding-right: 30px;
+    }
+    
+    .header_menu li {
+      margin-left: 10px;
+    }
+    
+    .content_container{
+      padding : 17px 90px 0px 84px;
+      width: 1024px;
+    }
+    
+    .content_title{
+      font-size: 25px;
+    }
+    
+    .content_update{
+      padding-top: 12px;
+      font-size: 14px;
+    }
+    
+    .content_desc{
+      padding-top: 12px;
+      width: 434px;
+      font-size: 21;
+      float: right;
+    }
+    
+    .search_title{
+      font-size: 20px; 
+      margin-bottom: 20px;
+    }
+    
+    .search_container input[type="text"] {
+      width:394px;
+      font-size: 15px;
+      padding: 3px 0px 17px 0px;
+      margin-right: 11px;
+    }
+    
+    .order_by{
+      padding-top: 37px !important;
+    }
+    
+    .order_by li{
+      margin-right: 8px;
+    }
+    
+    .order_group{
+      display: none;
+    }
+    
+    .main_chart{
+      padding-top: 45px !important;
+    }
+    
+    .main_chart table{
+      width: 100%;
+    }
+    
+    .officer_container{
+      padding-top: 79px;
+      margin-bottom: 47px;
+    }
+    
+    .official_title{
+      font-size: 31px;
+    }
+    
+    .official_text{
+      font-size: 21px;
+    }
+      
+    .totals_text{
+      font-size: 15px;
+      font-weight: bold;
+    }  
+      
+    .unit_price{
+      margin-right: 15.4px;
+    }  
+    
+    .arrow_price{
+      margin-right: 4px;
+    }
+      
+    .officer_table{
+      margin-bottom: 47px;
+    }
+      
+    .footer_container{
+      width: 1024px;
+      margin: 0 auto;
+    }
+    
+    .footer_comment{
+      padding : 329px 86px 0px 84px !important;
+      margin: 0 auto;
+    }
+    
+    .data_table{
+      margin-bottom: 81px;
+    }
+    
+    .data_table th{
+      border-bottom: 1px solid #fff;
+      padding-bottom: 7px;
+      font-size: 15px;
+    }
+    
+    .data_table td{
+      font-size: 15px;
+      height: 61px;
+      display: table-cell;
+      padding-top: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.5);
+    }
+    
+    .simple_price{
+      line-height: 22px;
+      margin-right: 2px;
+    }
+    
+    .simple_unit_price{
+      font-size: 15px;
+      color: rgba(255,255,255,0.5);
+      vertical-align: top;
+      line-height: 25px;
+    }
+    
+    .data_table .up_price, .data_table .down_price{
+      padding-top: 0px !important;
+    }
+    
+    .content_introduce{
+      font-size: 21px;
+      padding-top: 36px;
+      width: 497px;
+    }
+    
+    .download_table{
+      font-size: 21px;
+      margin-top: 40px;
+      margin-bottom: 76px;
+    }
+    
+    .download_table td{
+      padding: 13px 0 10px;
+    }
+    
+    .license_desc{
+      margin-bottom: 45px !important;
+    }
+    
+    .intro_text{
+      width: 340px;
+    }
+}
+
+@media screen and (max-width:639px){
+    .header_container{
+      font-size: 14px;
+      height: 57px;
+    }
+    
+    .header_title{
+      padding-top: 13px;
+      padding-left: 16px;
+      font-size: 14px;
+    }
+    
+    .header_title .codenamu_logo{
+      width: 33px;
+      height: 33px;
+    }
+    
+    .header_sub_title, .header_sub_text{
+      display: none;
+    }
+    
+    .header_menu{
+      padding-top: 17px; 
+      padding-right: 16px;
+    }
+    
+    .header_menu li {
+      margin-left: 7px;
+    }
+    
+    .content_container{
+      padding : 28px 9px 0px 15px !important;
+      width: 320px;
+    }
+    
+    .content_title{
+      font-size: 15px;
+    }
+    
+    .content_update{
+      font-size: 12px;
+      margin: 7px 0px 25px 0px;
+    }
+    
+    .content_desc{
+      font-size: 15px;
+    }
+    
+    .search_title{
+      font-size: 16px;
+      padding-top: 42px;
+      margin-bottom: 20px;
+    }
+    
+    .search_container input[type="text"] {
+      width:206px;
+      font-size: 15px;
+      padding: 0px 0 9px;
+      margin-right: 21.5px;
+    }
+    
+    .order_by{
+      padding-top: 42px !important;
+      padding-bottom: 26px !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 1);
+    }
+    
+    .order_line{
+      display: none;
+    }
+    
+    .main_chart table{
+      display: none;
+    }
+    
+    .officer_container{
+       padding-top: 38px !important;
+    }
+    
+    .officer_table{
+      width: 100%;
+      cursor: pointer;
+    }
+    
+    .officer_table td{
+      padding-top: 14px;
+    }
+    
+    .officer_table .official_totals{
+      border-bottom: 1px solid rgba(255,255,255,1);
+    }
+    
+    .officer_table .big_price{
+      margin-bottom: 15px;
+    }
+    
+    .officer_row{
+      padding: 17px 0px 34px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    }
+    
+    .officer_row .official_totals {
+      padding-top: 26px !important;
+      margin-bottom: 42px !important;
+    }
+    
+    .data_table{
+      width: 100%;  
+      margin-bottom: 25px;
+    }
+    
+    .data_table thead{
+      display: none;
+    }
+    
+    .data_table .title_row td{
+      height: 65px !important;
+      font-weight: bold;
+      font-size: 15px !important;
+      padding-top: 14px;
+    }
+    
+    .data_table .content_row td{
+      height: 31px !important;
+      line-height: 55px;
+      font-weight: bold;
+      font-size: 15px !important;
+    }
+    
+    .data_table .last_row td{
+      height: 56px !important;
+      border-bottom: 1px solid rgba(255,255,255,0.5);
+      font-weight: bold;
+      line-height: 55px;
+      font-size: 15px !important;
+    }
+    
+    .totals_text{
+      display: none;
+    }
+    
+    .unit_price{
+      margin-right: 19px;
+    }
+    
+    .arrow_price{
+      margin-right: 2px;
+    }
+    
+    .simple_price{
+      margin-right: 8px;
+    }
+    
+    .official_title{
+      font-size: 15px;
+    }
+    
+    .sub_chart .sub_title, #history_chart{
+      margin-bottom: 32px;
+    }
+    
+    .content_introduce{
+      font-size: 15px;
+      padding-top: 25px;
+      width: 294px;
+    }
+    
+    
+    .download_table{
+      margin-top: 36px;
+      font-size: 13px;
+      margin-bottom: 57px;
+    }
+    
+    .download_table td{
+      padding: 11px 0 13px;
+    }
+    
+    .download_name{
+      text-align: right;
+    }
+    
+    .footer_container{
+      width: 320px;
+      margin: 0 auto;
+    }
+    
+    .footer_comment{
+      padding : 70px 16px 0px 10px !important;
+      margin: 0 auto;
+    }
+    
+    .license_desc{
+      margin-bottom: 48px !important;
+    }
+    
+    .news_image img{
+      width: 290px;
+      margin-bottom: 12px;
+    }
+    
+    .git_desc{
+      padding-top: 48px;
+      margin-bottom: 34px;
+    }
+    
+    .up_price, .down_price{
+      padding-top: 10px;
+    }
+    
+}
+
+
+.highcharts-tooltip span {
+  font-size:12px !important;
+  width:144px!important;
+  overflow:auto;
+  white-space:normal !important;
+  border-radius: 5px;
+}
+
+/*.chart_tooltip{*/
+/*    width: 144px;*/
+/*    line-height: 1;*/
+/*    font-weight: bold;*/
+/*    padding: 12px;*/
+/*    background: rgba(255, 255, 255, 0.8);*/
+/*    color: #515151;*/
+/*    border-radius: 2px;*/
+/*    position: absolute;*/
+/*    z-index: 1000;*/
+/*    visibility: hidden;*/
+/*    text-align: left !important;*/
+/*    position: absolute;*/
+/*}*/
+
+/*.chart_tooltip:after {*/
+/*    box-sizing: border-box;*/
+/*    display: inline;*/
+/*    font-size: 10px;*/
+/*    width: 100%;*/
+/*    line-height: 1;*/
+/*    color: rgba(255, 255, 255, 0.8);*/
+/*    content: "\25C0";*/
+/*    position: absolute;*/
+/*    top:20px;*/
+/*    left:-8px;*/
+/*    text-align: left !important;*/
+/*}*/
+
+#disqus_thread {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+iframe {
+  padding-top:0px;
+  margin-bottom: -54px;
+}
+
+.chart_tooltip{
+    width: 144px;
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.8);
+    color: #515151;
+    border-radius: 2px;
+    position: absolute;
+    z-index: 10;
+    visibility: hidden;
+    text-align: left !important;
+}
+
+.chart_tooltip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.8);
+    content: "\25C0";
+    position: absolute;
+    top:20px;
+    left:-8px;
+    text-align: left !important;
+}
