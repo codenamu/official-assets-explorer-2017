@@ -70,6 +70,8 @@ $(document).ready(function() {
     
     $('.order_by li').click(function(e){
         if($(this).attr('name') !=null){
+            $("#search_text").val("이름, 정당, 직책 등");
+            search_keyword = "-";
             paging = 0;
             $('.order_by li').each(function(e){
                 $(this).removeClass( "order_select" );
@@ -91,7 +93,6 @@ $(document).ready(function() {
         }else{
             paging = 0;
             getSummaryDatas("totals", search_keyword);
-            $("#order_by").hide();
         }
     });
     
@@ -105,10 +106,17 @@ $(document).ready(function() {
           contentType: false,
           success: function (data) {
            // if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-            if($(window).width() <=640){      
-                addAssetTableByMobile(data);    
+            if( 0 < data.length ){
+                if(search_keyword !="-")
+                    $("#order_by").hide();
+                    
+                if($(window).width() <=640){
+                    addAssetTableByMobile(data);    
+                }else{
+                    addAssetTable(data);    
+                }   
             }else{
-                addAssetTable(data);    
+                alert("검색 결과가 없습니다.");
             }
           },
           error: function (e) {
