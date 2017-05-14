@@ -111,7 +111,7 @@ function getSimpleTotalHtml(number){
     }
     var total_html = number.toString();
     if(total_html.length <= 4){
-        total_html = "<span class='simple_price'>"+numberWithCommas(total_html.substring(0, total_html.length-4))+"</span><span class='simple_unit_price'>만원</span>";        
+        total_html = "<span class='simple_price'>"+numberWithCommas(total_html)+"</span><span class='simple_unit_price'>만원</span>";        
     }else{
         total_html = "<span class='simple_price'>"+numberWithCommas(total_html.substring(0, total_html.length-4))+ "</span><span class='simple_unit_price'>억</span>";
     }
@@ -126,7 +126,7 @@ function getTotalText(number){
     }
     var total_html = number.toString();
     if(total_html.length <= 4){
-        total_html = numberWithCommas(total_html.substr(0, total_html.length-4))+"만원";        
+        total_html = numberWithCommas(total_html)+"만원";        
     }else{
         total_html = numberWithCommas(total_html.substring(0, total_html.length-4))+ "억원";
     }
