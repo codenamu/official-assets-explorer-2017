@@ -16,7 +16,6 @@
     <body>
         <div id="container-fluid">
             <% include ./header.ejs %>
-            
             <div id="search_div" class="visible"><% include ./search.ejs %></div>
             <div id="data_div" class="hidden"><% include ./data.ejs %></div>
             <div id="introduce_div" class="hidden"><% include ./introduce.ejs %></div>
@@ -46,6 +45,8 @@
             $('.header_menu li').each(function (e){
                 $("#"+$(this).attr('name')+"_div").removeClass("visible").addClass("hidden");
             });
+            if($("#"+$(this).attr('name')!='search')) initSearch();
+            if($("#"+$(this).attr('name')!='data')) initDataSearch();
             $("#"+$(this).attr('name')+"_div").removeClass("hidden");
         });
     });

@@ -227,12 +227,6 @@ a, a:hover, a:active, a:link, a:visited {
   color: rgba(255,255,255,0.5);
 }
 
-.content_introduce{
-  font-weight: bold;
-  float: left;
-  margin: 0px !important;
-}
-
 .site_desc{
   font-size: 15px;
 }
@@ -443,7 +437,9 @@ a, a:hover, a:active, a:link, a:visited {
     .content_introduce{
       font-size: 21px;
       padding-top: 36px;
-      width: 497px;
+      font-weight: bold;
+      float: left;
+      margin: 0px !important;
     }
     
     .download_table{

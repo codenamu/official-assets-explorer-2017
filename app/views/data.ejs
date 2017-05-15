@@ -60,13 +60,13 @@
             var search_keyword = $("#data_search_text").val();
             if(search_keyword == "" || search_keyword == "-" || search_keyword ==  "이름, 정당, 직책 등"){
                 alert("검색 키워드를 입력해주세요.");    
-                $("#search_text").val("이름, 정당, 직책 등");
+                $("#data_search_text").val("이름, 정당, 직책 등");
                 search_keyword = "-";
             }else{
                 getSummaryDatas(search_keyword);
             }
         });
-        
+       
         function getSummaryDatas(search_keyword){
             //uri : api/summary/[order by:totals, estate_amounts, fluctuates, relations]/[paging:pagenumber*limit]
             $.ajax({
@@ -157,9 +157,7 @@
                 
                 getSummaryDataByTotal(officer_id);
               },
-              error: function (e) {
-                  alert(e);
-              }
+              error: function (e) {}
             });
         }
         
@@ -313,4 +311,12 @@
               div.style("display", "none");
             }
     });
+    
+    function initDataSearch(){
+        $("#data_search_text").val("이름, 정당, 직책 등");
+        search_keyword = "-";
+        $("#officer_table tbody").empty().append(getEmptyRowHtml(4));
+        $("#data_table tbody").empty().append(getEmptyRowHtml(4));
+        $("#sub_chart").removeClass("visible").addClass("hidden");
+    }
 </script>

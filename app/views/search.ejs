@@ -102,6 +102,7 @@ $(document).ready(function() {
           type: "GET",
           url: "/api/summary/"+search_order+"/"+search_keyword+"/"+(paging*4),
           dataType:"json",
+          cache: false,
           processData: false,
           contentType: false,
           success: function (data) {
@@ -133,6 +134,10 @@ $(document).ready(function() {
             main_options.series = [];
             main_options.xAxis[0].categories = []; 
             main_options.xAxis[1].categories = []; 
+            var height = data.length*125;
+            main_options.xAxis[0].height = height; 
+            main_options.xAxis[1].height = height; 
+            main_options.yAxis.height = height; 
             
             var total_data = new Array();
             $(data).each(function(index) {
@@ -169,10 +174,18 @@ $(document).ready(function() {
             }
         
             var total_chart = new Highcharts.Chart(main_options);
-            
+            total_chart.reflow();
+        
+            // hichart bug fix.
             $("#total_chart g:first path:last").attr('stroke','#fff');
-            $("#total_chart .highcharts-xaxis:eq(0) path:last").prev().attr('stroke','#fff');
-            $("#total_chart .highcharts-xaxis:eq(1) path:last").prev().attr('stroke','#fff');
+            if(data.length==1){
+                $("#total_chart .highcharts-xaxis:eq(0) path:last").prev().attr('stroke','#fff');
+                var dy = $("#total_chart .highcharts-xaxis:eq(0) path:eq(1)").attr("d").split(" ")[2];
+                $("#total_chart .highcharts-xaxis:eq(1)").html($("#total_chart .highcharts-xaxis:eq(1)").html()+'<path fill="none" class="highcharts-tick" stroke="#fff" stroke-width="1" d="M 750 '+dy+' L 850 '+dy+'" opacity="1"/>');
+            }else if(1 < data.length){
+                $("#total_chart .highcharts-xaxis:eq(0) path:last").prev().attr('stroke','#fff');
+                $("#total_chart .highcharts-xaxis:eq(1) path:last").prev().attr('stroke','#fff');
+            }
             
             if (-1 < navigator.appVersion.indexOf("Win")){
                 $("#total_chart .highcharts-xaxis-labels:first text").each(function(index){
@@ -261,4 +274,9 @@ $(document).ready(function() {
         }
     }
 });
+
+function initSearch(){
+    // $(".order_line li:first").addClass( "order_select" );
+    // $(".order_line li:first").click();
+}
 </script>
