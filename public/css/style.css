@@ -484,7 +484,7 @@ a, a:hover, a:active, a:link, a:visited {
     
     .header_menu{
       padding-top: 17px; 
-      padding-right: 16px;
+      padding-right: 1em;
     }
     
     .header_menu li {
