@@ -3,14 +3,19 @@
 
 @font-face {
   font-family: 'open-arrow';
-  src: url('fonts/OpenArrow-Regular.ttf') format('truetype');
+  src: url(fonts/OpenArrow-Regular.eot?#iefix) format('embedded-opentype'),/* IE6-IE8 */       
+       url(fonts/OpenArrow-Regular.woff) format('woff'),/* 표준 브라우저 */
+       url(fonts/OpenArrow-Regular.ttf) format('truetype'),/* Safari, Android, iOS */
+       url(fonts/OpenArrow-Regular.svg) format('svg');/* TTF에서도 커버가 안되는 기기들에 대한 대응 */
   font-weight: normal;
   font-style: normal;
 }
   
 @font-face {
   font-family: 'mark-pro';
-  src: url('fonts/ff-mrk-pro-light.woff') format('woff');
+  src: url(fonts/ff-mrk-pro-light.eot?#iefix) format('embedded-opentype'),/* IE6-IE8 */       
+       url(fonts/ff-mrk-pro-light.woff) format('woff'),/* 표준 브라우저 */
+       url(fonts/ff-mrk-pro-light.svg) format('svg');/* TTF에서도 커버가 안되는 기기들에 대한 대응 */
   font-weight: lighter;
   font-style: normal;
 }
