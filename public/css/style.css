@@ -192,6 +192,7 @@ a:hover, li:hover{
 .simple_price{
   font-size: 25px;
   margin-right: 2px;
+  font-family: 'mark-pro' !important;
 }
 
 .unit_price{
