@@ -58,7 +58,7 @@ module.exports = {
                     },
                     order: req.params.order_by + ' DESC',
                     offset:req.params.paging, 
-                    limit:4
+                    limit:15
                     
                 })
             .then(summary => res.status(200).send(summary))
@@ -69,7 +69,7 @@ module.exports = {
                 { 
                     order: req.params.order_by + ' DESC',
                     offset:req.params.paging, 
-                    limit:4
+                    limit:15
                     
                 })
             .then(summary => res.status(200).send(summary))
@@ -83,6 +83,17 @@ module.exports = {
             { 
                 order: 'totals DESC',
                 attributes: ['officer_id', 'name', 'totals','job_title']
+            }
+        )
+        .then(summary => res.status(200).send(summary))
+        .catch(error => res.status(400).send(error));
+        
+    },
+    listById(req, res){
+        return summary
+        .findAll(
+            { 
+                where: { officer_id: req.params.officer_id}
             }
         )
         .then(summary => res.status(200).send(summary))

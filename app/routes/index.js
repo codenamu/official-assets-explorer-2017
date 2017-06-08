@@ -53,6 +53,7 @@ module.exports = (app) => {
   app.post('/api/liability', liabilitysController.create);
   
   app.get('/api/summary/:keyword', summaryController.retrieve);
+  app.get('/api/summary/listById/:officer_id', summaryController.listById);
   app.get('/api/summary/:order_by/:keyword/:paging', summaryController.list);
   app.post('/api/summary', summaryController.create);
   app.get('/api/summary', summaryController.listByTotal);

@@ -54,6 +54,9 @@
             </tbody>
         </table>
     </div>
+    <div class="more_container">
+        <input id="more_btn" type="button" value="더보기"/>
+    </div>
 </div>
 <script>
 $(document).ready(function() {
@@ -82,25 +85,33 @@ $(document).ready(function() {
         }
     });
   
+    var total_search_data = {};
+    
     $("#search_btn").click(function (event) {
         search_keyword = $("#search_text").val();
+        total_search_data = "";
+        paging = 0;
         if(search_keyword == "" || search_keyword == "-" || search_keyword == "이름, 정당, 직책 등"){
-            paging = 0;
             search_keyword = "-";
             $("#search_text").val("이름, 정당, 직책 등");
             $("#order_by").show();
             $(".order_by li:first").click();
         }else{
-            paging = 0;
             getSummaryDatas("totals", search_keyword);
         }
     });
+    
+    $("#more_btn").click(function (event) {
+        paging++;
+        getSummaryDatas("totals", search_keyword);
+    });
+    
     
     function getSummaryDatas(search_order, search_keyword){
         //uri : api/summary/[order by:totals, estate_amounts, fluctuates, relations]/[paging:pagenumber*limit]
         $.ajax({
           type: "GET",
-          url: "/api/summary/"+search_order+"/"+search_keyword+"/"+(paging*4),
+          url: "/api/summary/"+search_order+"/"+search_keyword+"/"+(paging*15),
           dataType:"json",
           cache: false,
           processData: false,
@@ -108,16 +119,31 @@ $(document).ready(function() {
           success: function (data) {
            // if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
             if( 0 < data.length ){
+                if(paging == 0){
+                    total_search_data = data;    
+                }else{
+                    $(data).each(function(index) {
+                        total_search_data.push(data[index]);
+                    });
+                }
+                
                 if(search_keyword !="-")
                     $("#order_by").hide();
                     
                 if($(window).width() <=640){
-                    addAssetTableByMobile(data);    
+                    addAssetTableByMobile(total_search_data);    
                 }else{
-                    addAssetTable(data);    
+                    addAssetTable(total_search_data);
                 }   
             }else{
                 alert("검색 결과가 없습니다.");
+                total_search_data = '';
+            }
+            
+            if(data.length < 4){
+                $("#more_btn").hide();
+            }else{
+                $("#more_btn").show();
             }
           },
           error: function (e) {
@@ -129,7 +155,7 @@ $(document).ready(function() {
         if(data.length <=0){
             $("#assets_table tbody").append(getEmptyRowHtml(4));        
         }else{
-            $("#total_chart").height((data.length+(paging*4))*170);
+            $("#total_chart").height(data.length*125+32);
         
             main_options.series = [];
             main_options.xAxis[0].categories = []; 
@@ -165,6 +191,8 @@ $(document).ready(function() {
                     obj.color = '#242424';
                     obj.borderColor = index%2==0?'#ffaf00':'#0075fa';
                     obj.borderWidth = '2';
+                    obj.officer_id = data[index].officer_id;
+                    obj.name = data[index].name;
                     row_data.push(obj);
                 });
                 
@@ -181,22 +209,25 @@ $(document).ready(function() {
             if(data.length==1){
                 $("#total_chart .highcharts-xaxis:eq(0) path:last").prev().attr('stroke','#fff');
                 var dy = $("#total_chart .highcharts-xaxis:eq(0) path:eq(1)").attr("d").split(" ")[2];
-                $("#total_chart .highcharts-xaxis:eq(1)").html($("#total_chart .highcharts-xaxis:eq(1)").html()+'<path fill="none" class="highcharts-tick" stroke="#fff" stroke-width="1" d="M 750 '+dy+' L 850 '+dy+'" opacity="1"/>');
+                $("#total_chart .highcharts-xaxis:eq(1)").html($("#total_chart .highcharts-xaxis:eq(1)").html()+'<path fill="none" class="highcharts-tick" stroke="#fff" stroke-width="1" d="M 730 '+dy+' L 850 '+dy+'" opacity="1"/>');
             }else if(1 < data.length){
                 $("#total_chart .highcharts-xaxis:eq(0) path:last").prev().attr('stroke','#fff');
                 $("#total_chart .highcharts-xaxis:eq(1) path:last").prev().attr('stroke','#fff');
             }
             
+            var osDx = 0;
             if (-1 < navigator.appVersion.indexOf("Win")){
+                osDx = -3;
                 $("#total_chart .highcharts-xaxis-labels:first text").each(function(index){
-                    $(this).find("tspan:first").attr('x', getXpointByLenthWin($(this).find("tspan:first").text()));
+                    $(this).find("tspan:first").attr('x', 1+Number(getXpointByLenthWin($(this).find("tspan:first").text())));
                     $(this).find("tspan:first").attr('dy', '15');
                     $(this).find("tspan:eq(1)").attr('x', getXpointByLenthWin($(this).find("tspan:eq(1)").text()));
                     $(this).find("tspan:eq(1)").attr('dy', '20');
                     $(this).find("tspan:eq(2)").attr('x', getXpointByLenthWin($(this).find("tspan:eq(2)").text()));
                     $(this).find("tspan:eq(2)").attr('dy', '20');
                     $(this).find("tspan:eq(3)").attr('x', '345');
-                    $(this).find("tspan:eq(3)").attr('dy', '-22');   
+                    $(this).find("tspan:eq(3)").attr('dy', '-22');
+                    
                 });
             }else{
                 $("#total_chart .highcharts-xaxis-labels:first text").each(function(index){
@@ -208,8 +239,17 @@ $(document).ready(function() {
                     $(this).find("tspan:eq(2)").attr('dy', '20');
                     $(this).find("tspan:eq(3)").attr('x', '345');
                     $(this).find("tspan:eq(3)").attr('dy', '-22');
+                    
                 });
             }
+           
+            $("#total_chart .highcharts-xaxis-labels:eq(1) text").each(function(index){
+                $(this).attr('y', $(this).attr('y')-17);
+                $(this).find("tspan:last").attr('dx','4');
+                $(this).find("tspan:last").attr('dy','-4.5');
+                
+                $(this).attr('x',Number($(this).attr('x'))+(7-$(this).find("tspan:last").html().length)*7+10+osDx);
+            });
         }
     }
     
@@ -260,7 +300,8 @@ $(document).ready(function() {
                     obj.borderColor ='#ffaf00';
                     obj.borderWidth = '2';
                     obj.y = value;
-                    
+                    obj.officer_id = data[index].officer_id;
+                    obj.name = data[index].name;
                     series_row.data.push(obj);
                     
                     main_mobile_option.series.push(series_row);
@@ -273,10 +314,18 @@ $(document).ready(function() {
             });
         }
     }
+    
+    $(document).keypress(function(e) {
+        if(e.which == 13 && $("#search_btn").is(":visible")) {
+            $("#search_btn").click();    
+        }
+    });
+    
 });
 
 function initSearch(){
-    // $(".order_line li:first").addClass( "order_select" );
-    // $(".order_line li:first").click();
+    $(".order_line li:first").addClass( "order_select" );
+    $(".order_line li:first").click();
 }
+
 </script>

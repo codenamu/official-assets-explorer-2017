@@ -13,9 +13,9 @@
   
 @font-face {
   font-family: 'mark-pro';
-  src: url(fonts/ff-mrk-pro-light.eot?#iefix) format('embedded-opentype'),/* IE6-IE8 */       
-       url(fonts/ff-mrk-pro-light.woff) format('woff'),/* 표준 브라우저 */
-       url(fonts/ff-mrk-pro-light.svg) format('svg');/* TTF에서도 커버가 안되는 기기들에 대한 대응 */
+  src: url(fonts/ff-mark-pro-light.eot?#iefix) format('embedded-opentype'),/* IE6-IE8 */       
+       url(fonts/ff-mark-pro-light.woff) format('woff'),/* 표준 브라우저 */
+       url(fonts/ff-mark-pro-light.svg) format('svg');/* TTF에서도 커버가 안되는 기기들에 대한 대응 */
   font-weight: lighter;
   font-style: normal;
 }
@@ -25,7 +25,7 @@ body{
   margin: 0px;
   color: #fff;
   background-color: #242424;
-  font-family: 'open-arrow', 'Spoqa Han Sans', 'Sans-serif' !important;
+  font-family: 'Spoqa Han Sans', 'Sans-serif' !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -41,6 +41,10 @@ ul{
 a, a:hover, a:active, a:link, a:visited {
   text-decoration: none;
   color: #fff;
+}
+
+a:hover, li:hover{
+  opacity: 0.5;
 }
 
 .row{
@@ -98,6 +102,7 @@ a, a:hover, a:active, a:link, a:visited {
 .content_desc{
   font-weight: bold;
   margin: 0px;
+  word-break: keep-all;
 }
 
 .search_title{
@@ -120,7 +125,7 @@ a, a:hover, a:active, a:link, a:visited {
   outline: none;
 }
 
-.search_container input[type="button"]{
+.search_container input[type="button"], .more_container input[type="button"]{
   color: #5b5b5b;
   background: #fff;
   text-decoration: none;
@@ -173,6 +178,7 @@ a, a:hover, a:active, a:link, a:visited {
 .big_price, .small_price{
   color: #fff;
   margin-right: 2px;
+  font-family: 'mark-pro' !important;
 }
 
 .big_price{
@@ -198,12 +204,14 @@ a, a:hover, a:active, a:link, a:visited {
   display: inline;
   vertical-align:bottom;
   line-height:20px;
+  font-family: 'open-arrow' !important;
 }
 
 .up_price, .down_price{
   font-size: 15px;
   padding-top:30px;
   vertical-align:top;
+  font-family: 'mark-pro' !important;
 }
 
 .up_price{
@@ -345,6 +353,21 @@ a, a:hover, a:active, a:link, a:visited {
       margin-right: 11px;
     }
     
+    .more_container{
+      width: 100%;
+      text-align: center;
+      padding-top: 20px;
+    }
+    
+    .more_container input[type="button"] {
+      font-size: 16px;
+      font-weight: bold;
+      height: 40px;
+      padding-bottom: 9px;
+      padding-top: 7px;
+      width: 64px;
+    }
+
     .order_by{
       padding-top: 37px !important;
     }
@@ -439,12 +462,19 @@ a, a:hover, a:active, a:link, a:visited {
       padding-top: 0px !important;
     }
     
-    .content_introduce{
-      font-size: 21px;
+    .content_introduce p{
+      font-size: 18px;
       padding-top: 36px;
       font-weight: bold;
       float: left;
       margin: 0px !important;
+      text-rendering: optimizeLegibility;
+      word-break: keep-all;
+      line-height: 1.6;
+    }
+    
+    .content_introduce p:last-child{
+      padding-top: 20px !important;
     }
     
     .download_table{
@@ -525,6 +555,21 @@ a, a:hover, a:active, a:link, a:visited {
       font-size: 15px;
       padding: 0px 0 9px;
       margin-right: 21.5px;
+    }
+    
+    .more_container{
+      width: 100%;
+      text-align: center;
+      padding-top: 20px;
+    }
+    
+    .more_container input[type="button"] {
+      font-size: 16px;
+      font-weight: bold;
+      height: 40px;
+      padding-bottom: 9px;
+      padding-top: 7px;
+      width: 64px;
     }
     
     .order_by{
@@ -631,8 +676,9 @@ a, a:hover, a:active, a:link, a:visited {
       font-size: 15px;
       padding-top: 25px;
       width: 294px;
+      text-rendering: optimizeLegibility;
+      word-break: keep-all;
     }
-    
     
     .download_table{
       margin-top: 36px;

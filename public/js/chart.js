@@ -41,21 +41,21 @@ function getCategoryHtml(name, organization, division, totals){
 function getCategoryTotals(totals){
     var total_html = totals.toString();
     if(total_html.length <= 4){
-        total_html = '<span style="color:rgba(255, 255, 255, 1);font-size:25px;">'+numberWithCommas(number)+'</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">만원</span>';        
+        total_html = '<span style="color:rgba(255, 255, 255, 1);font-size:25px;font-family:\'mark-pro\'">'+numberWithCommas(number)+'</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">만원</span>';        
     }else{
-        total_html = '<span style="color:rgba(255, 255, 255, 1);font-size:40px">'+numberWithCommas(total_html.substring(0, total_html.length-4))+ '</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">억 </span>'
-            + '<span style="color:rgba(255, 255, 255, 1);font-size:25px;">'+numberWithCommas(total_html.substring(total_html.length-4))+ '</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">만원</span>';
+        total_html = '<span style="color:rgba(255, 255, 255, 1);font-size:40px;font-family:\'mark-pro\'">'+numberWithCommas(total_html.substring(0, total_html.length-4))+ '</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">억 </span>'
+            + '<span style="color:rgba(255, 255, 255, 1);font-size:25px;font-family:\'mark-pro\'">'+numberWithCommas(total_html.substring(total_html.length-4))+ '</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">만원</span>';
     }
     return total_html;
 }
 
 function getCategoryFluctuates(number){
     var fluctuates_html = number.toString();
-    var front_span = '<span style="color:#ff6300;font-size:27px;">↑</span><span style="color:#ff6300;font-size:15px;">';
+    var front_span = '<span style="color:#ff6300;font-size:27px;font-family:\'open-arrow\'">↑</span><span style="color:#ff6300;font-size:15px;font-family:\'mark-pro\'">';
     var back_span ="만원</span>";
     
     if(-1 < fluctuates_html.indexOf('-')){
-        front_span = '<span style="color:#0075fa;font-size:27px;">↓</span><span style="color:#0075fa;font-size:15px;">';
+        front_span = '<span style="color:#0075fa;font-size:27px;font-family:\'open-arrow\'">↓</span><span style="color:#0075fa;font-size:15px;font-family:\'mark-pro\'">';
         fluctuates_html = fluctuates_html.replace("-","");
     }
     
@@ -90,7 +90,7 @@ var main_options = {
             tickWidth:1,
     		tickColor: 'rgba(255, 255, 255, 0.5)',
 			tickPosition: "outside",
-    		tickLength: 400,
+    		tickLength: 380,
         }, {
             height: 500,
             linkedTo: 0,
@@ -99,7 +99,7 @@ var main_options = {
             tickWidth:1,
     		tickColor: 'rgba(255, 255, 255, 0.5)',
 			tickPosition: "outside",
-		    tickLength: 100,
+		    tickLength: 120,
             opposite: true,                      
         }],
     yAxis:{
@@ -117,6 +117,7 @@ var main_options = {
           style: {
             fontSize:12,
             color: 'rgba(255, 255, 255, 0.5)',
+            fontFamily: 'mark-pro'
           },
           formatter: function() {
               if(100000 < this.value || this.value < -100000){
@@ -135,7 +136,7 @@ var main_options = {
         bar: {
             dataLabels: {
                 enabled: true,
-                style:{"color": "#ffffff", "fontSize": "13px", "fontWeight":"normal" },
+                style:{"color": "#ffffff", "fontSize": "13px", "fontWeight":"normal","fontFamily":"mark-pro" },
                 formatter: function() {
                     if(this.y != 0){
                         var label ='현금성자산 ';
@@ -167,6 +168,13 @@ var main_options = {
             },
             groupPadding:0.9,
             pointWidth:26,
+            point: {
+                events: {
+                    click: function (e) {
+                        initDataByOfficer(this.officer_id, this.name);
+                    }
+                }
+            }
         },
     },
     series: []
@@ -211,6 +219,7 @@ var main_mobile_option = {
         labels: {
           style: {
             fontSize:12,
+            fontFamily:'mark-pro',
             color: 'rgba(255, 255, 255, 0.5)',
           },
           formatter: function() {
@@ -231,7 +240,7 @@ var main_mobile_option = {
                 allowOverlap: true,
                 enabled: true,
                 align: "right",
-                style:{"color": "#ffffff", "fontSize": "13px", "fontWeight":"normal" },
+                style:{"color": "#ffffff", "fontSize": "13px", "fontWeight":"normal","fontFamily":"mark-pro" },
                 formatter: function() {
                     if(this.y != 0){
                         var label ='현금성자산 ';
@@ -256,6 +265,13 @@ var main_mobile_option = {
             },
             groupPadding:0.9,
             pointWidth:26,
+            point: {
+                events: {
+                    click: function (e) {
+                        initDataByOfficer(this.officer_id, this.name);
+                    }
+                }
+            }
         },
     },
     series: []
@@ -282,7 +298,7 @@ var history_options = {
       startOnTick: true,
       endOnTick: true,
       labels:{
-      	style:{ "color": "#fff", "fontSize": "15px" },
+      	style:{ "color": "#fff", "fontSize": "15px","fontFamily":"mark-pro" },
 			}
     },
     yAxis: {
@@ -296,7 +312,7 @@ var history_options = {
         // tickInterval:50000000,
         // tickAmount:5,
         labels:{
-          	style:{ "color": "#fff", "fontSize": "12px" },
+          	style:{ "color": "#fff", "fontSize": "12px","fontFamily":"mark-pro" },
             formatter: function() {
               if(100000 < this.value || this.value < -100000){
                   return (this.value/100000) + " 억";    

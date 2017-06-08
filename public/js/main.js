@@ -31,7 +31,7 @@ function getFluctuatesHtml(number){
         if(Number(fluctuates_html)==0){
             fluctuates_html = 1;
         }
-        return fron_span + fluctuates_html + back_span;
+        return fron_span + "<span style='font-family:mark-pro !important'>"+fluctuates_html + "</span>" +back_span;
     }
 }
 

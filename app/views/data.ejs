@@ -43,14 +43,17 @@
     </div>
     <div id="sub_chart" class="row sub_chart hidden">
         <table>
+            <!--<td class="col-xs-12 col-sm-1 text-left sub_title">재산 이력</td>-->
+            <!--<td class="col-xs-12 col-sm-5 text-left"><div id="history_chart" style="min-width: 310px;" /></td>-->
+            <!--<td class="col-xs-12 col-sm-1 text-right sub_title">재산 비교</td>-->
+            <!--<td class="col-xs-12 col-sm-5 text-left"><div id="compare_chart" style="min-width: 310px;text-align:right !important"/></td>-->
             <td class="col-xs-12 col-sm-1 text-left sub_title">재산 이력</td>
-            <td class="col-xs-12 col-sm-5 text-left"><div id="history_chart" style="min-width: 310px;" /></td>
-            <td class="col-xs-12 col-sm-1 text-right sub_title">재산 비교</td>
-            <td class="col-xs-12 col-sm-5 text-left"><div id="compare_chart" style="min-width: 310px;text-align:right !important"/></td>
+            <td class="col-xs-12 col-sm-11 text-left"><div id="history_chart" style="min-width: 310px;" /></td>
         </table>    
     </div>
 </div>
 <script>
+    innerFunction = null;
     $(document).ready(function() {
         $("#data_search_text").click(function (event) {
             $("#data_search_text").val("");
@@ -87,6 +90,25 @@
             });
         }
         
+        function getSummaryDatasById(officer_id){
+            $.ajax({
+              type: "GET",
+              url: "/api/summary/listById/"+officer_id,
+              dataType:"json",
+              processData: false,
+              contentType: false,
+              success: function (data) {
+                if($(window).width() <=640){      
+                    addOfficerTableByMobile(data);    
+                }else{
+                    addOfficerTable(data);    
+                }
+              },
+              error: function (e) {
+              }
+            });
+        }
+        
         function addOfficerTable(data){
             $("#officer_table tbody").empty();
             $("#data_table tbody").empty();
@@ -94,6 +116,10 @@
                 $("#data_table tbody").append(getEmptyRowHtml(4));
                 $("#sub_chart").removeClass("visible").addClass("hidden");
             }else{
+                
+                if(1 < data.length)
+                    $("#sub_chart").removeClass("visible").addClass("hidden");
+                    
                 $("#data_table tbody").append(getSelectRowHtml(4));
                 
                 $(data).each(function(index) {
@@ -121,6 +147,8 @@
                 $("#data_table tbody").append(getEmptyRowHtml(2));
                 $("#sub_chart").removeClass("visible").addClass("hidden");
             }else{
+                if(1 < data.length)
+                    $("#sub_chart").removeClass("visible").addClass("hidden");
                 $("#data_table tbody").append(getSelectRowHtml(2));
                 
                 $(data).each(function(index) {
@@ -155,7 +183,7 @@
                 
                 addDataTable(data, total_html, fluctuates_html);
                 
-                getSummaryDataByTotal(officer_id);
+                // getSummaryDataByTotal(officer_id);
               },
               error: function (e) {}
             });
@@ -259,6 +287,10 @@
             if($(window).width() <=640){      
                 $("#officer_table tbody").append(getSelectedOfficerHtmlByMobile( data.organization, data.division, data.job_title, data.name, total, fluctuate));
                 $("#data_table tbody").append(getAssetDataHtmlByMobile(data.tengible_estate_assets, data.tengible_assets, data.financial_assets, data.liability_assets));
+                
+                if(0< data.length && !$("#data_table").is(":visible")){
+                    $("#data_table tbody").show();     
+                }
             }else{
                 $("#officer_table tbody").append(getSelectedOfficerHtml(data.organization, data.division, data.job_title, data.name, total, fluctuate));
                 $("#data_table tbody").append(getAssetDataHtml(data.tengible_estate_assets, data.tengible_assets, data.financial_assets, data.liability_assets));
@@ -296,27 +328,51 @@
                 .attr("class", "chart_tooltip")
                 .style("display", "none");
             
-            function mouseover() {
-              div.style("display", "inline");
+        function mouseover() {
+          div.style("display", "inline");
+        }
+        
+        function mousemove() {
+          div
+              .text(d3.event.pageX + ", " + d3.event.pageY)
+              .style("left", (d3.event.pageX - 34) + "px")
+              .style("top", (d3.event.pageY - 12) + "px");
+        }
+        
+        function mouseout() {
+          div.style("display", "none");
+        }
+        
+        $(document).keypress(function(e) {
+            if(e.which == 13 && $("#data_search_btn").is(":visible")) {
+                $("#data_search_btn").click();    
             }
-            
-            function mousemove() {
-              div
-                  .text(d3.event.pageX + ", " + d3.event.pageY)
-                  .style("left", (d3.event.pageX - 34) + "px")
-                  .style("top", (d3.event.pageY - 12) + "px");
-            }
-            
-            function mouseout() {
-              div.style("display", "none");
-            }
+        });
+        
+        innerFunction = getSummaryDatasById;
     });
     
     function initDataSearch(){
-        $("#data_search_text").val("이름, 정당, 직책 등");
         search_keyword = "-";
+        initDataSearch(search_keyword);
+    }
+    
+    function initDataSearch(search_keyword){
+        $("#data_search_text").val("이름, 정당, 직책 등");
         $("#officer_table tbody").empty().append(getEmptyRowHtml(4));
         $("#data_table tbody").empty().append(getEmptyRowHtml(4));
+        if(!$("#data_table").is(":visible")){
+            $("#data_table tbody").hide();     
+        }
         $("#sub_chart").removeClass("visible").addClass("hidden");
+    }
+    
+    function initDataByOfficer(officer_id, name){
+        $("#data_search_text").val(name);
+        $('.header_menu li').each(function (e){
+            $("#"+$(this).attr('name')+"_div").removeClass("visible").addClass("hidden");
+        });
+        innerFunction(officer_id);
+        $("#data_div").removeClass("hidden").addClass("visible");
     }
 </script>
