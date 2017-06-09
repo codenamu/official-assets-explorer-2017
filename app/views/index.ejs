@@ -39,6 +39,11 @@
         </div>
     </body>
     <script>
+    var isMobile;
+    if($(window).width() <=640)
+        isMobile = true;
+    else 
+        isMobile = false;
         
     $(document).ready(function() {
         $('.header_menu li').click(function(e){

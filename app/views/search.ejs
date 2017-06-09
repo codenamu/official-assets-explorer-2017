@@ -130,7 +130,7 @@ $(document).ready(function() {
                 if(search_keyword !="-")
                     $("#order_by").hide();
                     
-                if($(window).width() <=640){
+                if(isMobile){
                     addAssetTableByMobile(total_search_data);    
                 }else{
                     addAssetTable(total_search_data);
@@ -248,7 +248,7 @@ $(document).ready(function() {
                 $(this).find("tspan:last").attr('dx','4');
                 $(this).find("tspan:last").attr('dy','-4.5');
                 
-                $(this).attr('x',Number($(this).attr('x'))+(7-$(this).find("tspan:last").html().length)*7+10+osDx);
+                $(this).attr('x',Number($(this).attr('x'))+(7-$(this).find("tspan:last").html().length)*7+9+osDx);
             });
         }
     }

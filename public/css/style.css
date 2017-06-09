@@ -44,7 +44,7 @@ a, a:hover, a:active, a:link, a:visited {
 }
 
 a:hover, li:hover{
-  opacity: 0.5;
+  opacity: 0.5 ;
 }
 
 .row{
@@ -265,6 +265,10 @@ a:hover, li:hover{
   margin-bottom: 24px;
 }
 
+.article img:hover, .article div:hover{
+  opacity: 0.5 !important;
+}
+
 .news_image{
   margin-bottom: 12px;
 }
@@ -383,6 +387,10 @@ a:hover, li:hover{
     
     .main_chart{
       padding-top: 45px !important;
+    }
+    
+    .main_chart g:hover{
+      cursor: pointer !important;
     }
     
     .main_chart table{

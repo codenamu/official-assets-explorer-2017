@@ -59,8 +59,8 @@ function getCategoryFluctuates(number){
         fluctuates_html = fluctuates_html.replace("-","");
     }
     
-    if(4 < fluctuates_html.length){
-        fluctuates_html = fluctuates_html.substring(0, fluctuates_html.length-4);
+    if(4 <= fluctuates_html.length){
+        fluctuates_html = fluctuates_html.substring(0, fluctuates_html.length-5);
         back_span ="억원</span>";
     }
     
@@ -91,6 +91,8 @@ var main_options = {
     		tickColor: 'rgba(255, 255, 255, 0.5)',
 			tickPosition: "outside",
     		tickLength: 380,
+    		shared:true,
+    		crosshair: true,
         }, {
             height: 500,
             linkedTo: 0,
@@ -100,7 +102,9 @@ var main_options = {
     		tickColor: 'rgba(255, 255, 255, 0.5)',
 			tickPosition: "outside",
 		    tickLength: 120,
-            opposite: true,                      
+            opposite: true,     
+            shared:true,
+            crosshair: true
         }],
     yAxis:{
         height: 500,
@@ -108,6 +112,7 @@ var main_options = {
             text: null,
             align: 'high'
         },       
+        shared:true,
         tickAmount:7,
         opposite:true,
         gridLineWidth:1,
@@ -130,7 +135,13 @@ var main_options = {
     },
     
     tooltip: {
-      enabled: false
+        shared: true,
+        
+        useHTML: true,
+        formatter: function () {
+            return false;
+        }
+        
     },
     plotOptions: {
         bar: {
@@ -174,7 +185,14 @@ var main_options = {
                         initDataByOfficer(this.officer_id, this.name);
                     }
                 }
-            }
+            },
+            column: {
+                states: {
+                    hover: {
+                        color: '#000000'                                                           
+                    }
+                }
+            },
         },
     },
     series: []
@@ -195,7 +213,7 @@ var main_mobile_option = {
     title: {
         text: null
     },
-      xAxis: [{      		
+    xAxis: [{      		
             categories:[''],
             tickWidth:0,
             lineWidth:0, 
