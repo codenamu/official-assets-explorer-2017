@@ -148,6 +148,7 @@ var main_options = {
         spacingLeft: 0,
         spacingRight: 0,
         backgroundColor: "#242424",
+        className: 'usePointer',
     },
     credits:false,    
     exporting: { enabled: false },

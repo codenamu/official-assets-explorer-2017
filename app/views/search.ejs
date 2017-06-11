@@ -203,7 +203,7 @@ $(document).ready(function() {
         
             var total_chart = new Highcharts.Chart(main_options);
             total_chart.reflow();
-        
+           
             // hichart bug fix.
             $("#total_chart g:first path:last").attr('stroke','#fff');
             if(data.length==1){

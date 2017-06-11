@@ -389,6 +389,10 @@ a:hover, li:hover{
       padding-top: 45px !important;
     }
     
+    .usePointer{
+      cursor: pointer !important;
+    }
+    
     .main_chart g:hover{
       cursor: pointer !important;
     }
