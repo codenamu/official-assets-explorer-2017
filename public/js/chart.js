@@ -67,6 +67,78 @@ function getCategoryFluctuates(number){
     return front_span + numberWithCommas(fluctuates_html)+back_span;
 }
 
+function defined(obj) {
+    return obj !== UNDEFINED && obj !== null;
+}
+
+var UNDEFINED,VISIBLE = 'visible';
+
+(function (HC) {
+    HC.wrap(HC.Axis.prototype, 'drawCrosshair', function (proceed, e, point) {
+        var path,
+        options = this.crosshair,
+            animation = options.animation,
+            pos,
+            attribs,
+            categorized;
+
+        if (
+        // Disabled in options
+        !this.crosshair ||
+        // Snap
+        ((defined(point) || !HC.pick(this.crosshair.snap, true)) === false)) {
+            this.hideCrosshair();
+        } else {
+            
+            // Get the path
+            if (!HC.pick(options.snap, true)) {
+                pos = (this.horiz ? e.chartX - this.pos : this.len - e.chartY + this.pos);
+            } else if (defined(point)) {
+                pos = this.isXAxis ? point.plotX : this.len - point.plotY; // #3834
+            }
+
+            if (this.isRadial) {
+                path = this.getPlotLinePath(this.isXAxis ? point.x : pick(point.stackY, point.y)) || null; // #3189
+            } else {
+                path = this.getPlotLinePath(null, null, null, null, pos) || null; // #3189
+            }
+
+            if (path === null) {
+                this.hideCrosshair();
+                return;
+            }
+            
+            // Draw the cross
+            if (this.cross) {    
+                //overwrite path height;
+                // path[5] = point.series.chart.containerHeight;
+                path[1] = 0;
+                path[4] = 850;
+                console.log(path);
+                this.cross.attr({
+                    visibility: VISIBLE
+                })[animation ? 'animate' : 'attr']({
+                    d: path
+                }, animation);
+            } else {
+                categorized = this.categories && !this.isRadial;
+                attribs = {
+                    'stroke-width': options.width || (categorized ? this.transA : 1),
+                    stroke: options.color || (categorized ? 'rgba(255,255,255,0.1)' : '#fff'),
+                    zIndex: options.zIndex || 2
+                };
+                if (options.dashStyle) {
+                    attribs.dashstyle = options.dashStyle;
+                }
+                
+                this.cross = this.chart.renderer.path(path).attr(attribs).add();
+            }
+
+        }
+
+    });
+})(Highcharts);
+
 var main_options = {
     chart: {
         renderTo: 'total_chart',
@@ -133,10 +205,9 @@ var main_options = {
             },
         }
     },
-    
+
     tooltip: {
         shared: true,
-        
         useHTML: true,
         formatter: function () {
             return false;
@@ -183,8 +254,14 @@ var main_options = {
                 events: {
                     click: function (e) {
                         initDataByOfficer(this.officer_id, this.name);
+                    },
+                    mouseOver: function(e) {
+                        
+                    },
+                    mouseOut: function(e){
+                        
                     }
-                }
+                },
             },
             column: {
                 states: {
@@ -196,6 +273,7 @@ var main_options = {
         },
     },
     series: []
+
 };
 
 var main_mobile_option = {
