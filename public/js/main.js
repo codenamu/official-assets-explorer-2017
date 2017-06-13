@@ -111,7 +111,7 @@ function getOfficerHtmlByMobile(id, organization, division, job_title, name, tot
     row += '<div class="official_text">'+job_title+'</div></td>';
     row += '<td class="col-xs-5 text-right">'+getFluctuatesHtml(convertUnit(fluctuates))+'</div></td>';
     row += '<tr class="official_totals"><td colspan="3" class="padding-top-35 margin-bottom-15 col-xs-12 text-left">'+getTotalsHtml(convertUnit(totals))+'</td></tr>';
-    return row;
+    return row; 
 }
 
 function getEmptyRowHtml(cols){

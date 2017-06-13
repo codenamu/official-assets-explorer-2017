@@ -102,7 +102,7 @@ var UNDEFINED,VISIBLE = 'visible';
             } else {
                 path = this.getPlotLinePath(null, null, null, null, pos) || null; // #3189
             }
-
+ 
             if (path === null) {
                 this.hideCrosshair();
                 return;
