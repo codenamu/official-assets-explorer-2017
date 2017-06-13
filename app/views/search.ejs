@@ -204,45 +204,30 @@ $(document).ready(function() {
             var total_chart = new Highcharts.Chart(main_options);
             total_chart.reflow();
            
-        
-        //   $('#total_chart').bind('mousemove touchmove touchstart', function (e) {
-        //         var chart, point, i, event;
-        
-        //     for (i = 0; i < Highcharts.charts.length; i = i + 1) {
-        //         chart = Highcharts.charts[i];
-        //         event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-        //         point = chart.series[0].searchPoint(event, true); // Get the hovered point
-        
-        //         if (point) {
-        //             point.highlight(e);
-        //         }
-        //     }
-        // });
-        
-        Highcharts.Point.prototype.highlight = function (event) {
-            $('#total_chart').highcharts().xAxis[0].drawCrosshair(event, this);
-        };
+            Highcharts.Point.prototype.highlight = function (event) {
+                $('#total_chart').highcharts().xAxis[0].drawCrosshair(event, this);
+            };
+                
+            $('#total_chart').on('mousemove', function (e) { 
+                var chart = $('#total_chart').highcharts();
+                var event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
+                var point = chart.series[0].searchPoint(event, true); // Get the hovered point
+                
+                if (point) {
+                    point.highlight(e);
+                }
+            });
             
-        $('#total_chart').on('mousemove', function (e) { 
-            var chart = $('#total_chart').highcharts();
-            var event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-            var point = chart.series[0].searchPoint(event, true); // Get the hovered point
-            
-            if (point) {
-                point.highlight(e);
-            }
-        });
-        
-        $('#total_chart').on('click', function (e) { 
-            var chart = $('#total_chart').highcharts();
-            var event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-            var point = chart.series[0].searchPoint(event, true); // Get the hovered point
-            
-            if (point) {
-                initDataByOfficer(point.officer_id, point.name);
-            }
-        });
-           
+            $('#total_chart').on('click', function (e) { 
+                var chart = $('#total_chart').highcharts();
+                var event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
+                var point = chart.series[0].searchPoint(event, true); // Get the hovered point
+                
+                if (point) {
+                    initDataByOfficer(point.officer_id, point.name);
+                }
+            });
+               
             // hichart bug fix.
             $("#total_chart g:first path:last").attr('stroke','#fff');
             if(data.length==1){

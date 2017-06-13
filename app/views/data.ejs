@@ -20,6 +20,13 @@
     </div>
     <div class="officer_container">
         <table id="officer_table" class="officer_table col-sm-12">
+            <thead class="hidden">
+                <tr>
+                    <th class="text-left col-sm-4 officer_table_th">이름(소속 및 지위)</th>
+                    <th class="text-left col-sm-4 officer_table_th">재산 총액</th>
+                    <th class="text-left col-sm-4 officer_table_th">전년도 대비</th>
+                </tr>
+            </thead>
             <tbody>
             </tbody>
         </table>  
@@ -43,10 +50,6 @@
     </div>
     <div id="sub_chart" class="row sub_chart hidden">
         <table>
-            <!--<td class="col-xs-12 col-sm-1 text-left sub_title">재산 이력</td>-->
-            <!--<td class="col-xs-12 col-sm-5 text-left"><div id="history_chart" style="min-width: 310px;" /></td>-->
-            <!--<td class="col-xs-12 col-sm-1 text-right sub_title">재산 비교</td>-->
-            <!--<td class="col-xs-12 col-sm-5 text-left"><div id="compare_chart" style="min-width: 310px;text-align:right !important"/></td>-->
             <td class="col-xs-12 col-sm-1 text-left sub_title">재산 이력</td>
             <td class="col-xs-12 col-sm-11 text-left"><div id="history_chart" style="min-width: 310px;" /></td>
         </table>    
@@ -112,6 +115,7 @@
         function addOfficerTable(data){
             $("#officer_table tbody").empty();
             $("#data_table tbody").empty();
+            
             if(data.length <=0){
                 $("#data_table tbody").append(getEmptyRowHtml(4));
                 $("#sub_chart").removeClass("visible").addClass("hidden");
@@ -122,16 +126,21 @@
                     
                 $("#data_table tbody").append(getSelectRowHtml(4));
                 
-                $(data).each(function(index) {
-                    $("#officer_table tbody").append(getOfficerHtml(data[index].officer_id, data[index].organization, data[index].division, 
-                    data[index].job_title, data[index].name, data[index].totals, data[index].fluctuates));
-                });
-             
+                if(1 < data.length){
+                    $("#officer_table thead").removeClass("hidden").addClass("visible");
+                    $(data).each(function(index) {
+                        $("#officer_table tbody").append(getOfficersHtml(data[index].officer_id, data[index].organization, data[index].division, 
+                        data[index].job_title, data[index].name, data[index].totals, data[index].fluctuates));
+                    });    
+                }else{
+                    $("#officer_table thead").removeClass("visible").addClass("hidden");
+                    $("#officer_table tbody").append(getOfficerHtml(data[0].officer_id, data[0].organization, data[0].division, data[0].job_title, data[0].name, data[0].totals, data[0].fluctuates));
+                }
+                
                 $("#officer_table tbody").on("click", "tr", function(e){
                     var officer_id = $(this).closest('tr').children('td:first').text();
-                    var total_html = $(this).closest('tr').children('td:nth-child(3)').html();
-                    var fluctuates_html = $(this).closest('tr').children('td:nth-child(4)').html();
-                    
+                    var total_html = "<div class='totals_text'>총액</div>"+$(this).closest('tr').children('td:nth-child(3)').html();
+                    var fluctuates_html = "<div class='totals_text'>전년도 대비</div>"+$(this).closest('tr').children('td:nth-child(4)').html();
                     getOfficerData(officer_id, total_html, fluctuates_html);
                 });
                 
@@ -181,7 +190,7 @@
                 $("#officer_table tbody").prop('onclick',null).off('click');
                 $("#officer_table tbody").empty();
                 $("#data_table tbody").empty();
-                
+                $("#officer_table thead").removeClass("visible").addClass("hidden");
                 addDataTable(data, total_html, fluctuates_html);
                 
                 // getSummaryDataByTotal(officer_id);
@@ -377,4 +386,6 @@
         innerFunction(officer_id);
         $("#data_div").removeClass("hidden").addClass("visible");
     }
+    
+    $("#data_search_btn").click();
 </script>

@@ -39,11 +39,59 @@ function getOfficerHtml(id, organization, division, job_title, name, totals, flu
     var row = "<tr class='cur_po'>";
     row += "<td class='hidden'>"+id+"</td>";
     row +="<td class='col-sm-4'><div class='official_title'>"+name+"</div><div class='official_text'>"+job_title+"</div><div class='official_text'>"+division+"</div></td>";
-    row +="<td class='col-sm-3'><div class='totals_text'>총액</div>"+getTotalsHtml(convertUnit(totals))+"</td>";
-    row +="<td class='col-sm-5'><div class='totals_text'>전년도 대비</div>"+getFluctuatesHtml(convertUnit(fluctuates))+"</td>";
+    row +="<td class='col-sm-4'><div class='totals_text'>총액</div>"+getTotalsHtml(convertUnit(totals))+"</td>";
+    row +="<td class='col-sm-4'><div class='totals_text'>전년도 대비</div>"+getFluctuatesHtml(convertUnit(fluctuates))+"</td>";
     row += "</tr>";
     return row;
 }
+
+function getOfficersHtml(id, organization, division, job_title, name, totals, fluctuates){
+    var row = "<tr class='cur_po'>";
+    row += "<td class='hidden'>"+id+"</td>";
+    row +="<td class='col-sm-4 officer_table_td'><div class='chart_official'>"+name+"</div><div class='chart_official_sub'>"+job_title+"</div><div class='chart_official_sub'>"+division+"</div></td>";
+    row +="<td class='col-sm-4 officer_table_td'>"+getOfficerTotalsHtml(convertUnit(totals))+"</td>";
+    row +="<td class='col-sm-4 officer_table_td'>"+getFluctuatesHtml(convertUnit(fluctuates))+"</td>";
+    row += "</tr>";
+    return row;
+}
+
+function getOfficerTotalsHtml(number){
+    var total_html = number.toString();
+    if(total_html.length <= 4){
+        total_html = "<span class='chart_totals'>"+numberWithCommas(number)+"</span><span class='unit_price'>만원</span>";        
+    }else{
+        total_html = "<span class='chart_totals'>"+numberWithCommas(total_html.substring(0, total_html.length-4))+ "</span><span class='chart_totals_unit'>억 </span>"
+            + "<span class='chart_totals_sub'>"+numberWithCommas(total_html.substring(total_html.length-4))+ "</span><span class='chart_totals_unit'>만원</span></span>";
+    }
+    return total_html;
+}
+
+// function getOfficerFluctuatesHtml(number){
+//     if(number==0){
+//         return "-";
+//     }else{
+//         var fluctuates_html = number.toString();
+//         var fron_span ="<div class='chart_up_unit'><span class='chart_up'>&#x2191</span>";
+//         var back_span ="만원</div>";
+        
+//         if(-1 < fluctuates_html.indexOf('-')){
+//             fron_span = "<div class='chart_down_unit'><span class='chart_down'>&#x2193</span>";
+//             fluctuates_html = fluctuates_html.replace("-","");
+//         }
+        
+//         if(4 < fluctuates_html.length){
+//             fluctuates_html = fluctuates_html.substring(0, fluctuates_html.length-4);
+//             back_span ="억원</div>";
+//         }
+        
+//         fluctuates_html = numberWithCommas(fluctuates_html);
+//         if(Number(fluctuates_html)==0){
+//             fluctuates_html = 1;
+//         }
+//         return fron_span + "<span style='font-family:mark-pro !important'>"+fluctuates_html + "</span>" +back_span;
+//     }
+// }
+
 
 function getMainOfficerHtmlByMobile(id, organization, division, job_title, name, totals, fluctuates){
     var row='<div class="officer_row"><div class="row"><div class="col-xs-7 text-left">';
@@ -88,8 +136,8 @@ function getSelectRowHtml(cols){
 function getSelectedOfficerHtml(organization, division, job_title, name, total, fluctuate){
     var row = "<tr>";
     row +="<td class='col-sm-4'><div class='official_title'>"+name+"</div><div class='official_text'>"+job_title+"</div><div class='official_text'>"+division+"</div></td>";
-    row +="<td class='col-sm-3'>"+total+"</td>";
-    row +="<td class='col-sm-5'>"+fluctuate+"</td>";
+    row +="<td class='col-sm-4'>"+total+"</td>";
+    row +="<td class='col-sm-4'>"+fluctuate+"</td>";
     row += "</tr>";
     return row;
 }

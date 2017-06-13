@@ -31,9 +31,9 @@ function getAssetByType(data, index){
 }
 
 function getCategoryHtml(name, organization, division, totals){
-    var categoryHtml='<span style="color:white;font-size:15px;cursor: pointer;">'+name+'</span><br/>'+
-	'<span style="color:rgba(255, 255, 255, 0.7);font-size:15px;cursor: pointer;">'+organization+'</span><br/>'+
- 	'<span style="color:rgba(255, 255, 255, 0.7);font-size:15px;cursor: pointer;">'+division+'</span><br/>'+getCategoryTotals(convertUnit(totals));
+    var categoryHtml='<span class="chart_official" style="color:white;">'+name+'</span><br/>'+
+	'<span class="chart_official_sub" style="color:rgba(255, 255, 255, 0.7);">'+organization+'</span><br/>'+
+ 	'<span class="chart_official_sub" style="color:rgba(255, 255, 255, 0.7);">'+division+'</span><br/>'+getCategoryTotals(convertUnit(totals));
  
     return categoryHtml;
 }
@@ -41,21 +41,21 @@ function getCategoryHtml(name, organization, division, totals){
 function getCategoryTotals(totals){
     var total_html = totals.toString();
     if(total_html.length <= 4){
-        total_html = '<span style="color:rgba(255, 255, 255, 1);font-size:25px;cursor: pointer;font-family:\'mark-pro\'">'+numberWithCommas(number)+'</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">만원</span>';        
+        total_html = '<span class="chart_totals" style="color:rgba(255, 255, 255, 1);font-size:40px;">'+numberWithCommas(total_html)+'</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">만원</span>';        
     }else{
-        total_html = '<span style="color:rgba(255, 255, 255, 1);font-size:40px;cursor: pointer;font-family:\'mark-pro\'">'+numberWithCommas(total_html.substring(0, total_html.length-4))+ '</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">억 </span>'
-            + '<span style="color:rgba(255, 255, 255, 1);font-size:25px;cursor: pointer;font-family:\'mark-pro\'">'+numberWithCommas(total_html.substring(total_html.length-4))+ '</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">만원</span>';
+        total_html = '<span class="chart_totals" style="color:rgba(255, 255, 255, 1);font-size:40px;">'+numberWithCommas(total_html.substring(0, total_html.length-4))+ '</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">억 </span>'
+            + '<span class="chart_totals_sub" style="color:rgba(255, 255, 255, 1);">'+numberWithCommas(total_html.substring(total_html.length-4))+ '</span><span style="color:rgba(255, 255, 255, 0.5);font-size:15px;">만원</span>';
     }
     return total_html;
 }
 
 function getCategoryFluctuates(number){
     var fluctuates_html = number.toString();
-    var front_span = '<span style="color:#ff6300;cursor: pointer;font-size:27px;font-family:\'open-arrow\'">↑</span><span style="color:#ff6300;font-size:15px;cursor: pointer;font-family:\'mark-pro\'">';
+    var front_span = '<span class="chart_up" style="color:#ff6300;">↑</span><span class="chart_up_unit" style="color:#ff6300;">';
     var back_span ="만원</span>";
     
     if(-1 < fluctuates_html.indexOf('-')){
-        front_span = '<span style="color:#0075fa;cursor: pointer;font-size:27px;font-family:\'open-arrow\'">↓</span><span style="color:#0075fa;font-size:15px;cursor: pointer;font-family:\'mark-pro\'">';
+        front_span = '<span class="chart_down" style="color:#0075fa;">↓</span><span class="chart_down_unit" style="color:#0075fa;">';
         fluctuates_html = fluctuates_html.replace("-","");
     }
     

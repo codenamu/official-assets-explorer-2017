@@ -210,7 +210,7 @@ a:hover, li:hover{
 
 .up_price, .down_price{
   font-size: 15px;
-  padding-top:30px;
+  padding-top:12px;
   vertical-align:top;
   font-family: 'mark-pro' !important;
 }
@@ -413,7 +413,67 @@ a:hover, li:hover{
     .official_text{
       font-size: 21px;
     }
-      
+    
+    .chart_official{
+      color: #fff !important;
+      font-size:15px;
+      cursor: pointer;
+    }
+    
+    .chart_official_sub{
+      color:rgba(255, 255, 255, 0.7);
+      font-size:15px;
+      cursor: pointer;
+    }
+    
+    .chart_totals{
+      color:rgba(255, 255, 255, 1);
+      font-size:40px !important;
+      cursor: pointer;
+      font-family: 'mark-pro';
+    }
+    
+    .chart_totals_sub{
+      color:rgba(255, 255, 255, 1);
+      font-size:25px;
+      cursor: pointer;
+      font-family: 'mark-pro';
+    }
+    
+    .chart_totals_unit{
+      color:rgba(255, 255, 255, 0.5);
+      font-size:15px;
+      cursor: pointer;
+    }
+    
+    .chart_up{
+      color:#ff6300;
+      cursor: pointer;
+      font-size:27px;
+      font-family:'open-arrow';
+    }
+    
+    .chart_up_unit{
+      color:#ff6300;
+      cursor: pointer;
+      font-size: 15px;
+      font-family:'mark-pro';
+    }
+    
+    .chart_down{
+      color:#ff6300;
+      cursor: pointer;
+      font-size:27px;
+      font-family:'open-arrow';
+    }
+    
+    .chart_down_unit{
+      color:#ff6300;
+      cursor: pointer;
+      font-size: 15px;
+      font-family:'mark-pro';
+    }
+    
     .totals_text{
       font-size: 15px;
       font-weight: bold;
@@ -429,6 +489,26 @@ a:hover, li:hover{
       
     .officer_table{
       margin-bottom: 47px;
+    }
+    
+    .officer_table th:hover{
+      background-color: rgba(255,255,255,0) !important;
+    }
+    
+    .officer_table tr:hover{
+      background-color: rgba(255,255,255,0.1) !important;
+    }
+    
+    .officer_table_th{
+      border-bottom: 1px solid #fff;
+      padding-bottom: 20px;
+    }
+    
+    .officer_table_td{
+      cursor: pointer;
+      padding-top: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+      height: 126px;
     }
       
     .footer_container{
@@ -734,9 +814,7 @@ a:hover, li:hover{
     .up_price, .down_price{
       padding-top: 10px;
     }
-    
 }
-
 
 .highcharts-tooltip span {
   font-size:12px !important;
@@ -745,35 +823,6 @@ a:hover, li:hover{
   white-space:normal !important;
   border-radius: 5px;
 }
-
-/*.chart_tooltip{*/
-/*    width: 144px;*/
-/*    line-height: 1;*/
-/*    font-weight: bold;*/
-/*    padding: 12px;*/
-/*    background: rgba(255, 255, 255, 0.8);*/
-/*    color: #515151;*/
-/*    border-radius: 2px;*/
-/*    position: absolute;*/
-/*    z-index: 1000;*/
-/*    visibility: hidden;*/
-/*    text-align: left !important;*/
-/*    position: absolute;*/
-/*}*/
-
-/*.chart_tooltip:after {*/
-/*    box-sizing: border-box;*/
-/*    display: inline;*/
-/*    font-size: 10px;*/
-/*    width: 100%;*/
-/*    line-height: 1;*/
-/*    color: rgba(255, 255, 255, 0.8);*/
-/*    content: "\25C0";*/
-/*    position: absolute;*/
-/*    top:20px;*/
-/*    left:-8px;*/
-/*    text-align: left !important;*/
-/*}*/
 
 #disqus_thread {
   overflow: hidden;
