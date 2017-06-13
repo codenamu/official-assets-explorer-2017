@@ -139,8 +139,12 @@
                 
                 $("#officer_table tbody").on("click", "tr", function(e){
                     var officer_id = $(this).closest('tr').children('td:first').text();
-                    var total_html = "<div class='totals_text'>총액</div>"+$(this).closest('tr').children('td:nth-child(3)').html();
-                    var fluctuates_html = "<div class='totals_text'>전년도 대비</div>"+$(this).closest('tr').children('td:nth-child(4)').html();
+                    var total_html = $(this).closest('tr').children('td:nth-child(3)').html();
+                    var fluctuates_html = $(this).closest('tr').children('td:nth-child(4)').html();
+                    if(total_html.indexOf("totals_text")== -1){
+                        total_html = "<div class='totals_text'>총액</div>"+total_html;
+                        fluctuates_html = "<div class='totals_text'>전년도 대비</div>"+fluctuates_html;
+                    }
                     getOfficerData(officer_id, total_html, fluctuates_html);
                 });
                 
