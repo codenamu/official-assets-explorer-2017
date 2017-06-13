@@ -251,19 +251,6 @@ var main_options = {
             },
             groupPadding:0.9,
             pointWidth:26,
-            point: {
-                events: {
-                    click: function (e) {
-                        initDataByOfficer(this.officer_id, this.name);
-                    },
-                    mouseOver: function(e) {
-                        
-                    },
-                    mouseOut: function(e){
-                        
-                    }
-                },
-            },
             column: {
                 states: {
                     hover: {
