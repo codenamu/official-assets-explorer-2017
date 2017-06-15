@@ -157,7 +157,8 @@ function getSimpleTotalHtml(number){
         symbol = "-";
         number = Math.abs(number);
     }
-    var total_html = number.toString();
+    var total_html = convertUnit(number).toString();
+    
     if(total_html.length <= 4){
         total_html = "<span class='simple_price'>"+numberWithCommas(total_html)+"</span><span class='simple_unit_price'>만원</span>";        
     }else{
@@ -165,6 +166,7 @@ function getSimpleTotalHtml(number){
     }
     return symbol+total_html;
 }
+
 
 function getTotalText(number){
     var symbol="";
@@ -212,7 +214,7 @@ function getAssetDataHtml(tengible_estate_assets, tengible_assets, financial_ass
     if(hasBuilding){
         row +="<td class='col-sm-3 text-left'>"+getSimpleTotalHtml((previous_price_building))+"</td>";
         row +="<td class='col-sm-3 text-left'>"+getSimpleTotalHtml((present_price_building))+"</td>";
-        row +="<td class='col-sm-2 text-right'>"+getFluctuatesHtml((present_price_building-previous_price_building))+"</td>";    
+        row +="<td class='col-sm-2 text-right'>"+getFluctuatesHtml(convertUnit(present_price_building-previous_price_building))+"</td>";    
     }else{
         row += nodata_row;
     }
@@ -223,7 +225,7 @@ function getAssetDataHtml(tengible_estate_assets, tengible_assets, financial_ass
     if(hasLand){
         row +="<td class='col-sm-3 text-left'>"+getSimpleTotalHtml((previous_price_land))+"</td>";
         row +="<td class='col-sm-3 text-left'>"+getSimpleTotalHtml((present_price_land))+"</td>";
-        row +="<td class='col-sm-2 text-right'>"+getFluctuatesHtml((present_price_land-previous_price_land))+"</td>";    
+        row +="<td class='col-sm-2 text-right'>"+getFluctuatesHtml(convertUnit(present_price_land-previous_price_land))+"</td>";    
     }else{
         row += nodata_row;
     }
@@ -240,7 +242,7 @@ function getAssetDataHtml(tengible_estate_assets, tengible_assets, financial_ass
         }
         row +="<td class='col-sm-3 text-left'>"+getSimpleTotalHtml((previous_price))+"</td>";
         row +="<td class='col-sm-3 text-left'>"+getSimpleTotalHtml((present_price))+"</td>";
-        row +="<td class='col-sm-2 text-right'>"+getFluctuatesHtml((present_price-previous_price))+"</td>";
+        row +="<td class='col-sm-2 text-right'>"+getFluctuatesHtml(convertUnit(present_price-previous_price))+"</td>";
     }else{
         row += nodata_row;          
     }
@@ -257,7 +259,7 @@ function getAssetDataHtml(tengible_estate_assets, tengible_assets, financial_ass
         }
         row +="<td class='col-sm-3 text-left'>"+getSimpleTotalHtml((previous_price))+"</td>";
         row +="<td class='col-sm-3 text-left'>"+getSimpleTotalHtml((present_price))+"</td>";
-        row +="<td class='col-sm-2 text-right'>"+getFluctuatesHtml((present_price-previous_price))+"</td>";
+        row +="<td class='col-sm-2 text-right'>"+getFluctuatesHtml(convertUnit(present_price-previous_price))+"</td>";
     }
     row += "</tr>";
     
@@ -273,7 +275,7 @@ function getAssetDataHtml(tengible_estate_assets, tengible_assets, financial_ass
         
         row +="<td class='col-sm-3 text-left'>"+getSimpleTotalHtml((previous_price))+"</td>";
         row +="<td class='col-sm-3 text-left'>"+getSimpleTotalHtml((present_price))+"</td>";
-        row +="<td class='col-sm-2 text-right'>"+getFluctuatesHtml((present_price-previous_price))+"</td>";
+        row +="<td class='col-sm-2 text-right'>"+getFluctuatesHtml(convertUnit(present_price-previous_price))+"</td>";
     }else{
         row += nodata_row;          
     }

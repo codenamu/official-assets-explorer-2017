@@ -237,6 +237,9 @@ var main_options = {
                             symbol="";
                         }
                         
+                        if(this.key=='김병관')
+                            console.log(asset);
+                            
                         if(5 < asset.length){
                             asset = numberWithCommas(asset.substr(0, asset.length-5)) + "억";
                         }else{
