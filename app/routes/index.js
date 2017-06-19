@@ -24,7 +24,7 @@ module.exports = (app) => {
   app.get('/upload',csvController.getView);
   app.post('/upload', csvController.create);
   app.post('/upload/:csv_year', csvController.create);
-  app.post('/summary', csvController.summary);
+  app.post('/summary/:csv_year', csvController.summary);
   
   //api routes
   app.get('/api', (req, res) => res.status(200).send({
@@ -32,24 +32,29 @@ module.exports = (app) => {
   }));
 
   app.get('/api/officers/:officer_id', officersController.retrieve);
-  app.get('/api/officers', officersController.list);
+  app.get('/api/officers/years/:year_of_investigating', officersController.list);
   app.post('/api/officers', officersController.create);
   app.put('/api/officers/:officer_id', officersController.update);
   app.delete('/api/officers/:officer_id', officersController.destroy);
   
   app.get('/api/tengible_estate', tengibleEstatesController.list);
+  app.get('/api/tengible_estate/:year_of_investigating', tengibleEstatesController.list);
   app.post('/api/tengible_estate', tengibleEstatesController.create);
   
   app.get('/api/tengible', tengiblesController.list);
+  app.get('/api/tengible/:year_of_investigating', tengiblesController.list);
   app.post('/api/tengible', tengiblesController.create);
   
   app.get('/api/political', politicalsController.list);
+  app.get('/api/political/:year_of_investigating', politicalsController.list);
   app.post('/api/political', politicalsController.create);
   
   app.get('/api/financial', financialsController.list);
+  app.get('/api/financial/:year_of_investigating', financialsController.list);
   app.post('/api/financial', financialsController.create);
   
   app.get('/api/liability', liabilitysController.list);
+  app.get('/api/liability/:year_of_investigating', liabilitysController.list);
   app.post('/api/liability', liabilitysController.create);
   
   app.get('/api/summary/:keyword', summaryController.retrieve);

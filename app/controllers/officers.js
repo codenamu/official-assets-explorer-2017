@@ -9,11 +9,12 @@ module.exports = {
             .catch(error => res.status(400).send(error));
     },
     list(req, res){
+        var year_of_investigating = req.params.year_of_investigating;
         return officer
-            .all()
-            // .findAndCountAll({
-            //      limit: 20
-            //   })
+            // .all()
+            .findAll({
+                where: { year_of_investigating: year_of_investigating}
+            })
             .then(officer => res.status(200).send(officer))
             .catch(error => res.status(400).send(error));
     },

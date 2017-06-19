@@ -3,7 +3,9 @@ const tengible_estate = require('../models').tengible_estate_asset;
 module.exports = {
     list(req, res){
         return tengible_estate
-            .all()
+            .findAll({
+                where: { year_of_investigating: req.params.year_of_investigating}
+            })
             .then(officer => res.status(200).send(officer))
             .catch(error => res.status(400).send(error));
     },

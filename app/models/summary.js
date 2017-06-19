@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        summary.belongsTo(models.officer, {
+         summary.belongsTo(models.officer, {
           foreignKey: 'officer_id',
           onDelete: 'CASCADE',
         });

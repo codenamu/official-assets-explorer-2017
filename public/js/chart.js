@@ -227,7 +227,7 @@ var main_options = {
                         if(this.series.columnIndex == 1){
                           	label = '부동산 ';
                         }else if(this.series.columnIndex == 2){
-                          	label = '주식 ';
+                          	label = '금융자산 ';
                         }
                         
                         var symbol = "-";

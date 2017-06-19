@@ -120,7 +120,6 @@
                 $("#data_table tbody").append(getEmptyRowHtml(4));
                 $("#sub_chart").removeClass("visible").addClass("hidden");
             }else{
-                
                 if(1 < data.length)
                     $("#sub_chart").removeClass("visible").addClass("hidden");
                     
@@ -180,7 +179,7 @@
                 });
                 
                 if(data.length==1)
-                    $("#officer_table tr:eq(0)").click();
+                    $("#officer_table tr:eq(1)").click();
             }
         }
         
@@ -197,118 +196,22 @@
                 $("#data_table tbody").empty();
                 $("#officer_table thead").removeClass("visible").addClass("hidden");
                 addDataTable(data, total_html, fluctuates_html);
-                
-                // getSummaryDataByTotal(officer_id);
               },
               error: function (e) {}
             });
         }
         
-        const DRAW_PADDING = 5;
-        function getSummaryDataByTotal(search_id){
-            $.ajax({
-              type: "GET",
-              url: "/api/summary",
-              dataType:"json",
-              processData: false,
-              contentType: false,
-              success: function (data) {
-                $("#compare_chart").empty();
-                var measure = $("#compare_chart").width();
-                var svgContainer = d3.select("#compare_chart").append("svg")
-                    .attr("width", measure)
-                    .attr("height", measure+DRAW_PADDING*5);
-            
-                var start_x = measure/2;
-                var start_y = measure+DRAW_PADDING;
-                var rgb = 210;
-                var calc_symbol = true;
-                var diff_rgb= 20;
-                var search_circle_r;
-                
-                // var search_circle = new Array();
-                for(var i=0; i < data.length; i++){
-            //         // circle_r = ((measure/2)-1)*data[i].totals/data[0].totals;
-                    var circle_r = ((measure-DRAW_PADDING*2)/2)*(Math.log(data[i].totals-1)/Math.log(data[0].totals))^4;
-                    if(typeof(search_circle_r) == 'undefined' || circle_r < search_circle_r){  
-                        var circle = svgContainer
-                            .append("circle")
-                            .attr("fill", "rgb("+rgb+","+rgb+","+rgb+")")
-                            .attr("cx", start_x)
-                            .attr("cy", (circle_r<0?Math.abs(circle_r)+start_y:start_y-circle_r))
-                            .attr("r", (circle_r<0?Math.abs(circle_r):circle_r));
-                        
-                        if(i==0){
-                            circle.style("stroke", "white");
-                            circle.style("stroke-width", "3");
-                        }
-                        
-                        const original_color = rgb;
-                        
-                        if(search_id == data[i].officer_id){
-                            const index = (i+1);
-                            const position = Math.round(index/data.length*100);
-                            
-                            circle.attr("fill", "rgb(255,99,0)");
-                            const chart_tooltip = d3.select("#compare_chart")
-                                .append("div")
-                                .text(data[i].name+" "+data[i].job_title + "재산 "+getTotalText(convertUnit(data[i].totals))+"원은 상위 "+(position<=0?1:position)+"%에 속합니다.")
-                                .attr('class','chart_tooltip');
-                            
-                            circle.on("mouseover", function(event){
-                                d3.select(this).style("stroke", "rgb(255,99,0)");
-                                chart_tooltip.style("visibility", "visible");
-                            }).on("mousemove", function(event){
-                                var posX = d3.mouse(this)[0]+20;
-                                var posY = d3.mouse(this)[1]-20;
-                                chart_tooltip.style("top", posY+"px").style("left",posX+"px");
-                            }).on("mouseout", function(){
-                                chart_tooltip.style("visibility", "hidden");
-                                
-                                if(index==0){
-                                    d3.select(this).style("stroke", "white").style("stroke-width", "3");
-                                }
-                                else{
-                                    d3.select(this).style("stroke", "rgb("+original_color+","+original_color+","+original_color+")");
-                                }
-                                d3.select(this).style("fill", "rgb(255,99,0)");
-                            });
-                            // search_circle = circle;
-                            // search_circle.push(circle);
-                            
-                            search_circle_r = circle_r;
-                        }
-                        
-                        if(calc_symbol){
-                            rgb = rgb + diff_rgb;
-                            if(210<=rgb)
-                                calc_symbol = false;
-                        }else{
-                            rgb = rgb - diff_rgb;
-                            if(rgb<=0)
-                                calc_symbol = true;
-                        }
-                    }
-                }
-                // svgContainer.append(search_circle[0]);
-                svgContainer.exit().remove();
-              },
-              error: function (e) {
-              }
-            });
-        }
-        
         function addDataTable(data, total, fluctuate){
-            if(isMobile){      
+            if(isMobile){
                 $("#officer_table tbody").append(getSelectedOfficerHtmlByMobile( data.organization, data.division, data.job_title, data.name, total, fluctuate));
-                $("#data_table tbody").append(getAssetDataHtmlByMobile(data.tengible_estate_assets, data.tengible_assets, data.financial_assets, data.liability_assets));
+                $("#data_table tbody").append(getAssetDataHtmlByMobile(data.tengible_estate_assets, data.tengible_assets, data.financial_assets, data.political_assets, data.liability_assets));
                 
                 if(0< data.length && !$("#data_table").is(":visible")){
                     $("#data_table tbody").show();     
                 }
             }else{
                 $("#officer_table tbody").append(getSelectedOfficerHtml(data.organization, data.division, data.job_title, data.name, total, fluctuate));
-                $("#data_table tbody").append(getAssetDataHtml(data.tengible_estate_assets, data.tengible_assets, data.financial_assets, data.liability_assets));
+                $("#data_table tbody").append(getAssetDataHtml(data.tengible_estate_assets, data.tengible_assets, data.financial_assets, data.political_assets, data.liability_assets));
             }
             
             $("#sub_chart").removeClass("hidden").addClass("visible");
@@ -337,25 +240,6 @@
             history_chart.series[0].setData(series_data, true);
             
             $(".highcharts-grid.highcharts-xaxis-grid path:last").attr("stroke-width","0");
-        }
-        
-        var div = d3.select("body").append("div")
-                .attr("class", "chart_tooltip")
-                .style("display", "none");
-            
-        function mouseover() {
-          div.style("display", "inline");
-        }
-        
-        function mousemove() {
-          div
-              .text(d3.event.pageX + ", " + d3.event.pageY)
-              .style("left", (d3.event.pageX - 34) + "px")
-              .style("top", (d3.event.pageY - 12) + "px");
-        }
-        
-        function mouseout() {
-          div.style("display", "none");
         }
         
         $(document).keypress(function(e) {

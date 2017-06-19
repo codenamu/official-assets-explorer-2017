@@ -82,7 +82,8 @@ module.exports = {
       res.json({'result': 'Already uploaded', 'code': 1});
     }
   },summary(req, res){
-    getOfficerDatas();
+    const csv_year = req.params.csv_year;
+    getOfficerDatas(csv_year);
     res.setHeader('Content-Type', 'application/json');
     res.json({'result': 'Done', 'code': 1});
   }
@@ -459,8 +460,8 @@ var get_options = {
 
 var summary_hashs = new HashMap();
 var summary_keys = [];
-function getOfficerDatas(){
-  get_options.path = '/api/officers';
+function getOfficerDatas(csv_year){
+  get_options.path = '/api/officers/years/'+csv_year;
   
   var result='';       
   const req = http.request(get_options, (res) => {
@@ -484,13 +485,15 @@ function getOfficerDatas(){
         summary_object.tengible_estates = 0;
         summary_object.tengible_estate_amounts = 0;
         summary_object.financials = 0;
+        summary_object.politicals = 0;
+        summary_object.liabilitys = 0;
         summary_object.relations = 0;
         summary_object.fluctuates = 0;
 
         summary_keys.push(summary_object.officer_id);
         summary_hashs.set(summary_object.officer_id, summary_object);
       }
-      getTengibleEstateDatas();
+      getTengibleEstateDatas(csv_year);
     });
   });
   
@@ -503,8 +506,8 @@ function getOfficerDatas(){
   req.end();
 }
 
-function getTengibleEstateDatas(){
-  get_options.path = '/api/tengible_estate';
+function getTengibleEstateDatas(csv_year){
+  get_options.path = '/api/tengible_estate/'+csv_year;
   var result='';       
   const req = http.request(get_options, (res) => {
     res.setEncoding('utf8');
@@ -513,7 +516,7 @@ function getTengibleEstateDatas(){
     });
     res.on('end', () => {
       createSummaryDatas(JSON.parse(result));
-      getTengibleDatas();
+      getTengibleDatas(csv_year);
     });
   });
   
@@ -526,8 +529,8 @@ function getTengibleEstateDatas(){
   req.end();
 }
 
-function getTengibleDatas(){
-  get_options.path = '/api/tengible';
+function getTengibleDatas(csv_year){
+  get_options.path = '/api/tengible/'+csv_year;
   var result='';       
   const req = http.request(get_options, (res) => {
     res.setEncoding('utf8');
@@ -536,7 +539,7 @@ function getTengibleDatas(){
     });
     res.on('end', () => {
       createSummaryDatas(JSON.parse(result));
-      getFinancialDatas();
+      getFinancialDatas(csv_year);
     });
   });
   
@@ -549,8 +552,8 @@ function getTengibleDatas(){
   req.end();
 }
 
-function getFinancialDatas(){
-  get_options.path = '/api/financial';
+function getFinancialDatas(csv_year){
+  get_options.path = '/api/financial/'+csv_year;
   var result='';       
   const req = http.request(get_options, (res) => {
     res.setEncoding('utf8');
@@ -559,7 +562,7 @@ function getFinancialDatas(){
     });
     res.on('end', () => {
       createSummaryDatas(JSON.parse(result));
-      getPoliticalDatas();
+      getPoliticalDatas(csv_year);
     });
   });
   
@@ -572,8 +575,8 @@ function getFinancialDatas(){
   req.end();
 }
 
-function getPoliticalDatas(){
-  get_options.path = '/api/political';
+function getPoliticalDatas(csv_year){
+  get_options.path = '/api/political/'+csv_year;
   var result='';
   const req = http.request(get_options, (res) => {
     res.setEncoding('utf8');
@@ -582,7 +585,7 @@ function getPoliticalDatas(){
     });
     res.on('end', () => {
       createSummaryDatas(JSON.parse(result));
-      getLiabilityDatas();
+      getLiabilityDatas(csv_year);
     });
   });
   
@@ -595,8 +598,8 @@ function getPoliticalDatas(){
   req.end();
 }
 
-function getLiabilityDatas(){
-  get_options.path = '/api/liability';
+function getLiabilityDatas(csv_year){
+  get_options.path = '/api/liability/'+csv_year;
   var result='';
   const req = http.request(get_options, (res) => {
     res.setEncoding('utf8');
@@ -608,7 +611,8 @@ function getLiabilityDatas(){
       // console.log('*****************************************************************************');
       // console.log(summary_hashs);
       // console.log('*****************************************************************************');
-      insertSummaryDatas(consts.START_INDEX);    });
+      insertSummaryDatas(consts.START_INDEX);    
+    });
   });
   
   req.on('error', (e) => {
@@ -621,23 +625,29 @@ function getLiabilityDatas(){
 }
 
 function createSummaryDatas(resultJson){
-  console.log(resultJson.length);
   if(0 < resultJson.length){
     for(var i = 0; i < resultJson.length; i++){
       var summary_object = new Object();
       summary_object = summary_hashs.get(resultJson[i].officer_id);
       
-      if(resultJson[i].category < 20){
+      console.log(resultJson[i].officer_id +":"+resultJson[i].category+":"+resultJson[i].present_price);
+      console.log(summary_keys.length);
+      console.log(summary_object);
+      if(resultJson[i].category < 13){
         summary_object.tengible_estates += resultJson[i].present_price;
         summary_object.tengible_estate_amounts = summary_object.tengible_estate_amounts + 1;
-      }else if(20<resultJson[i].category && resultJson[i].category < 30){
+      }else if(12<resultJson[i].category && resultJson[i].category < 26){
         summary_object.tengibles += resultJson[i].present_price;
-      }else if(30<resultJson[i].category){
+      }else if(resultJson[i].category == 28){
+        summary_object.politicals += resultJson[i].present_price;  
+      }else if(25<resultJson[i].category && resultJson[i].category < 35){
         summary_object.financials += resultJson[i].present_price;  
+      }else if(resultJson[i].category == 35){
+        summary_object.liabilitys += resultJson[i].present_price;  
       }
-
+      
       //총액
-      summary_object.totals = summary_object.tengible_estates + summary_object.tengibles + summary_object.financials;
+      summary_object.totals = summary_object.tengible_estates + summary_object.tengibles + summary_object.financials + summary_object.politicals + summary_object.liabilitys;
       
       //자녀 재산 
       if(8 < resultJson[i].relation){

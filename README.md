@@ -54,6 +54,7 @@ IT기술로 사회 문제 해결을 위한 커뮤니티 코드포서울
   sequelize model:create --name financial_asset --attributes category:integer,relation:integer,type_of_property:integer,description:text,previous_price:integer,increase_price:integer,increase_deal_price:integer,decrease_price:integer,decrease_deal_price:integer,present_price:integer,reason_for_change:text,year_of_investigating:integer
   sequelize model:create --name liability_asset --attributes category:integer,relation:integer,type_of_property:integer,description:text,previous_price:integer,increase_price:integer,increase_deal_price:integer,decrease_price:integer,decrease_deal_price:integer,present_price:integer,reason_for_change:text,year_of_investigating:integer
   sequelize model:create --name summary --attributes organization:string,division:string,job_title:string,name:string,totals:integer,tengibles:integer,tengible_estates:integer,tengible_estate_amounts:integer,financials:integer,relations:integer,fluctuates:integer,year_of_investigating:integer
+  sequelize db:migrate
   ```
   
 4. pm2 설치(optional)  

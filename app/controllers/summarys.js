@@ -3,6 +3,7 @@ const officer = require('../models').officer;
 const tengible = require('../models').tengible_asset;
 const tengible_estate = require('../models').tengible_estate_asset;
 const financial = require('../models').financial_asset;
+const political = require('../models').political_asset;
 const liability = require('../models').liability_asset;
 
 module.exports = {
@@ -16,16 +17,19 @@ module.exports = {
                     where: { officer_id: req.params.keyword }
                 },
                 {
-                    // 자동차 정보만 수집
                     model: tengible,
                     required: false,
-                    where: { officer_id: req.params.keyword, category: 13 }
+                    where: { officer_id: req.params.keyword }
                 },
                 {
-                    // 예금 정보만 수집
                     model: financial,
                     required: false,
-                    where: { officer_id: req.params.keyword, category: 27 }
+                    where: { officer_id: req.params.keyword }
+                },
+                {
+                    model: political,
+                    required: false,
+                    where: { officer_id: req.params.keyword }
                 },
                 {
                     model: liability,

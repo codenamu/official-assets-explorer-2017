@@ -3,7 +3,9 @@ const financial = require('../models').financial_asset;
 module.exports = {
     list(req, res){
         return financial
-            .all()
+            .findAll({
+                where: { year_of_investigating: req.params.year_of_investigating}
+            })
             .then(officer => res.status(200).send(officer))
             .catch(error => res.status(400).send(error));
     },
