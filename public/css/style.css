@@ -239,6 +239,7 @@ a:hover, li:hover{
 
 .download_year{
   color: rgba(255,255,255,0.5);
+  vertical-align: top;
 }
 
 .site_desc{
@@ -259,6 +260,11 @@ a:hover, li:hover{
   color: rgba(255,255,255,1);
    margin-bottom: 36px;
 }
+
+span.download_data_format {
+  font-size:0.7em;
+}
+
 
 .article{
   padding-top: 18px;
@@ -787,9 +793,6 @@ a:hover, li:hover{
       text-align: right;
     }
 
-    .download_data_format {
-      font-size:0.7em;
-    }
 
 
     
