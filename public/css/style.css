@@ -786,6 +786,12 @@ a:hover, li:hover{
     .download_name{
       text-align: right;
     }
+
+    .download_data_format {
+      font-size:0.7em;
+    }
+
+
     
     .footer_container{
       width: 320px;
