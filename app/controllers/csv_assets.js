@@ -458,9 +458,11 @@ var get_options = {
   method: 'GET'
 }
 
-var summary_hashs = new HashMap();
-var summary_keys = [];
+var summary_hashs;
+var summary_keys;
 function getOfficerDatas(csv_year){
+  summary_hashs = new HashMap();
+  summary_keys = [];
   get_options.path = '/api/officers/years/'+csv_year;
   
   var result='';       
@@ -627,12 +629,10 @@ function getLiabilityDatas(csv_year){
 function createSummaryDatas(resultJson){
   if(0 < resultJson.length){
     for(var i = 0; i < resultJson.length; i++){
+      console.log('a'+resultJson.length);
       var summary_object = new Object();
       summary_object = summary_hashs.get(resultJson[i].officer_id);
       
-      console.log(resultJson[i].officer_id +":"+resultJson[i].category+":"+resultJson[i].present_price);
-      console.log(summary_keys.length);
-      console.log(summary_object);
       if(resultJson[i].category < 13){
         summary_object.tengible_estates += resultJson[i].present_price;
         summary_object.tengible_estate_amounts = summary_object.tengible_estate_amounts + 1;
@@ -646,6 +646,8 @@ function createSummaryDatas(resultJson){
         summary_object.liabilitys += resultJson[i].present_price;  
       }
       
+      console.log('b');
+      
       //총액
       summary_object.totals = summary_object.tengible_estates + summary_object.tengibles + summary_object.financials + summary_object.politicals + summary_object.liabilitys;
       
@@ -653,9 +655,14 @@ function createSummaryDatas(resultJson){
       if(8 < resultJson[i].relation){
         summary_object.relations += resultJson[i].present_price;  
       }
+      
+      console.log('c');
+      
       // 전년도 대비
       summary_object.fluctuates += (resultJson[i].present_price - resultJson[i].previous_price);
       summary_hashs.set(summary_object.officer_id, summary_object);
+      
+      console.log('d');
     }  
   }
 }
