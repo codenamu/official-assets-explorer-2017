@@ -48,6 +48,9 @@ module.exports = {
     },
     list(req, res){
         var keyword = req.params.keyword;
+        var search_year = 2017;
+
+        console.log('search_year : ' + search_year);
         if(keyword !='-' && 0 < keyword.length){
             return summary
             .findAll(
@@ -58,7 +61,7 @@ module.exports = {
                             {organization: { $like: '%'+keyword+'%'}},
                             {division: { $like: '%'+keyword+'%'}},
                             {job_title: { $like: '%'+keyword+'%'}},
-                        ]
+                        ],
                     },
                     order: req.params.order_by + ' DESC',
                     offset:req.params.paging, 
@@ -71,6 +74,9 @@ module.exports = {
             return summary
             .findAll(
                 { 
+                    where:{
+                        year_of_investigating: search_year,
+                    },
                     order: req.params.order_by + ' DESC',
                     offset:req.params.paging, 
                     limit:15
@@ -79,6 +85,7 @@ module.exports = {
             .then(summary => res.status(200).send(summary))
             .catch(error => res.status(400).send(error));
         }
+        
         
     },
     listByTotal(req, res){
